@@ -2,6 +2,7 @@
 #include <string.h>
 #include <cstring>
 #include "Movie.h"
+#include "EventLocation.h"
 using namespace std;
 
 class Ticket {
@@ -28,13 +29,6 @@ public:
 
 };
 
-/*class EventLocation {
-	//int max_no_of_seats;
-	int no_of_rows;
-	int* no_of_seats;
-
-};*/
-
 
 int main()
 {
@@ -54,4 +48,6 @@ int main()
 	Movie movie3;
 	cin >> movie3;
 	cout << movie3;
+
+	EventLocation loc1;
 }
