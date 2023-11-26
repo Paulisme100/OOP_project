@@ -218,6 +218,7 @@ public:
 		this->format = m.format;
 	}
 
+	//overloading operator =
 	Movie& operator=(const Movie& m) {
 
 		if (m.title != NULL)
@@ -261,6 +262,53 @@ public:
 		return *this;
 	}
 
+	//first generic method; it returns the duration of the movie expressed in hours
+	float durationInHours()
+	{
+		float hours = this->duration / 60.0;
+		return hours;
+	}
+
+	//second generic method; it transforms the hour and minutes into integers and then shows a message 
+	//saying when will the movie start and what is the delay given by the advertisements
+	void rest(int delay) {
+		int hour1 = this->time[0] - '0';
+		int hour2 = this->time[1] - '0';
+		int hh;
+		hh = hour1*10 + hour2;
+
+		int min1 = this->time[3] - '0';
+		int min2 = this->time[4] - '0';
+		int mm;
+		mm = min1 * 10 + min2;
+
+	}
+
+	//overload operator []
+	char operator[](int i)
+	{
+		if (i >= 0 && i <= strlen(this->title))
+		{
+			return this->title[i];
+		}
+		else
+		{
+			throw exception("the index is negative or greater the length of title");
+		}
+	}
+
+	//overload operator +
+	char operator+(int add)
+	{
+		if (duration <= 0)
+			throw exception("the number is negative or null");
+		else
+		{
+			this->duration += add;
+		}
+	}
+
+	//destructor 
 	~Movie() {
 		if (this->title != NULL)
 		{
