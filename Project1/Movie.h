@@ -344,16 +344,13 @@ istream& operator>>(istream& in, Movie& movie) {
 	in.getline(buffer, 100);
 	movie.setTitle(buffer);
 
-	// Input for date
-	cout << "Enter Date (DD/MM/YYYY): ";
+	cout << "Enter Date (dd/mm/yyyy): ";
 	in >> movie.date;
 
-	// Input for time
-	cout << "Enter Time (HH:MM): ";
+	cout << "Enter Time (hh:hh): ";
 	in >> buffer;
 	movie.setTime(buffer);
 
-	// Input for duration
 	cout << "Enter Duration (in minutes): ";
 	in >> movie.duration;
 
@@ -363,7 +360,6 @@ istream& operator>>(istream& in, Movie& movie) {
 	in.getline(buffer, 100);
 	movie.setGenre(buffer);
 
-	// Input for format
 	cout << "Enter Format: ";
 	in >> movie.format;
 
