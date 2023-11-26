@@ -271,7 +271,7 @@ public:
 
 	//second generic method; it transforms the hour and minutes into integers and then shows a message 
 	//saying when will the movie start and what is the delay given by the advertisements
-	void rest(int delay) {
+	void startMoment(int delay) {
 		int hour1 = this->time[0] - '0';
 		int hour2 = this->time[1] - '0';
 		int hh;
@@ -282,6 +282,7 @@ public:
 		int mm;
 		mm = min1 * 10 + min2;
 
+		cout <<endl<< "The start date is " << hh << ":" << mm << ". But the movie will begin after the " << delay << " minutes of advertisement.";
 	}
 
 	//overload operator []
@@ -308,6 +309,9 @@ public:
 		}
 	}
 
+	friend istream& operator>>(istream& in, Movie& movie);
+	friend ostream& operator<<(ostream& out, const Movie& movie);
+
 	//destructor 
 	~Movie() {
 		if (this->title != NULL)
@@ -328,4 +332,52 @@ public:
 			this->genre = nullptr;
 		}
 	}
+
 };
+
+istream& operator>>(istream& in, Movie& movie) {
+	char buffer[100];
+
+	cout << endl;
+	// Input for title
+	cout << endl << "Enter Title: ";
+	in.getline(buffer, 100);
+	movie.setTitle(buffer);
+
+	// Input for date
+	cout << "Enter Date (DD/MM/YYYY): ";
+	in >> movie.date;
+
+	// Input for time
+	cout << "Enter Time (HH:MM): ";
+	in >> buffer;
+	movie.setTime(buffer);
+
+	// Input for duration
+	cout << "Enter Duration (in minutes): ";
+	in >> movie.duration;
+
+	// Input for genre
+	cout << "Enter Genre: ";
+	in.ignore(); // Ignore newline left in the buffer
+	in.getline(buffer, 100);
+	movie.setGenre(buffer);
+
+	// Input for format
+	cout << "Enter Format: ";
+	in >> movie.format;
+
+	return in;
+}
+
+ostream& operator<<(ostream& out, const Movie& movie) {
+	out << endl;
+	out << "Title: " << movie.title << endl;
+	out << "Date: " << movie.date << endl;
+	out << "Time: " << movie.time << endl;
+	out << "Duration: " << movie.duration << " minutes" << endl;
+	out << "Genre: " << movie.genre << endl;
+	out << "Format: " << movie.format << endl;
+
+	return out;
+}

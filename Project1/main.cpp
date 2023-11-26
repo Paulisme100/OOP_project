@@ -49,4 +49,9 @@ int main()
 
 	movie2 + 10;
 	cout <<endl<<"New duration: "<< movie2.getDuration();
+	movie2.startMoment(20);
+
+	Movie movie3;
+	cin >> movie3;
+	cout << movie3;
 }
