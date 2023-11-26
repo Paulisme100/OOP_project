@@ -3,31 +3,8 @@
 #include <cstring>
 #include "Movie.h"
 #include "EventLocation.h"
+#include "Ticket.h"
 using namespace std;
-
-class Ticket {
-	const int code_num;
-	int room;
-	char* movieTitle;
-	string date;
-	int price;
-public:
-
-	int getPrice()
-	{
-		int price;
-		price = this->price;
-		return price;
-	}
-
-	string getDate()
-	{
-		string date;
-		date = this->date;
-		return date;
-	}
-
-};
 
 
 int main()
@@ -70,4 +47,18 @@ int main()
 
 	cout << endl << loc2;
 	
+	Ticket ticket1("Inception", 73, 25);
+	Ticket ticket2(ticket1);
+
+	cout << endl << ticket1.getUid() << endl;
+
+	if (ticket1 == ticket2)
+		cout << "That's a problem! ";
+	else
+		cout << "It's ok! ";
+
+	if (ticket1 < ticket2)
+		cout << endl<< "Ticket1 is cheaper than ticket2";
+	else
+		cout<< endl << "Ticket1 is not cheaper than ticket2";
 }

@@ -309,6 +309,7 @@ public:
 		}
 	}
 
+	//put friend so that the operators can have access to private attributes
 	friend istream& operator>>(istream& in, Movie& movie);
 	friend ostream& operator<<(ostream& out, const Movie& movie);
 
