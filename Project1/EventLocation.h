@@ -5,7 +5,7 @@
 #include <string.h>
 #include <cstring>
 using namespace std;
-
+ 
 class EventLocation {
 
 	char* locationName;

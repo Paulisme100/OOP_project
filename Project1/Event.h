@@ -4,7 +4,7 @@
 //#include "Movie.h"
 using namespace std;
 
-class Movie {
+class Event {
 	char* title;
 	string date;
 	char* time;
@@ -142,7 +142,7 @@ public:
 	}
 
 	//default construct
-	Movie()
+	Event()
 	{
 		this->title = NULL;
 		this->date = "";
@@ -153,7 +153,7 @@ public:
 	}
 
 	//constructor with parameters
-	Movie(const char* title, string date, const char * time, int duration, const char* genre, string format)
+	Event(const char* title, string date, const char * time, int duration, const char* genre, string format)
 	{
 		this->title = new char[strlen(title) + 1];
 		strcpy(this->title, title);
@@ -191,7 +191,7 @@ public:
 	}
 
 	//copy construct
-	Movie(const Movie& m)
+	Event(const Event& m)
 	{
 		if (m.title != NULL)
 		{
@@ -219,7 +219,7 @@ public:
 	}
 
 	//overloading operator =
-	Movie& operator=(const Movie& m) {
+	Event& operator=(const Event& m) {
 
 		if (m.title != NULL)
 		{
@@ -310,11 +310,11 @@ public:
 	}
 
 	//put friend so that the operators can have access to private attributes
-	friend istream& operator>>(istream& in, Movie& movie);
-	friend ostream& operator<<(ostream& out, const Movie& movie);
+	friend istream& operator>>(istream& in, Event& movie);
+	friend ostream& operator<<(ostream& out, const Event& movie);
 
 	//destructor 
-	~Movie() {
+	~Event() {
 		if (this->title != NULL)
 		{
 			delete[] this->title;
@@ -336,7 +336,7 @@ public:
 
 };
 
-istream& operator>>(istream& in, Movie& movie) {
+istream& operator>>(istream& in, Event& movie) {
 	char buffer[100];
 
 	cout << endl;
@@ -367,7 +367,7 @@ istream& operator>>(istream& in, Movie& movie) {
 	return in;
 }
 
-ostream& operator<<(ostream& out, const Movie& movie) {
+ostream& operator<<(ostream& out, const Event& movie) {
 	out << endl;
 	out << "Title: " << movie.title << endl;
 	out << "Date: " << movie.date << endl;
