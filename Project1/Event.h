@@ -9,7 +9,7 @@ class Event {
 	string date;
 	char* time;
 	int duration;
-	char* genre;
+	//char* genre;
 	string format;
 
 public:
@@ -23,14 +23,14 @@ public:
 		}
 	}
 
-	char* getGenre() {
+	/*char* getGenre() {
 		if (this->genre != NULL)
 		{
 			char* copy = new char[strlen(this->genre) + 1];
 			strcpy(copy, this->genre);
 			return copy;
 		}
-	}
+	}*/
 
 	string getDate() {
 		return this->date;
@@ -63,14 +63,14 @@ public:
 
 	}
 
-	void setGenre(const char* genre) {
+	/*void setGenre(const char* genre) {
 		if (this->genre != NULL)
 			delete[] this->title;
 
 		this->genre = new char[strlen(genre) + 1];
 		strcpy(this->genre, genre);
 
-	}
+	}*/
 
 	bool validateDate(const string date) {
 
@@ -148,7 +148,7 @@ public:
 		this->date = "";
 		this->time = NULL;
 		this->duration = 0;
-		this->genre = NULL;
+		//this->genre = NULL;
 		this->format = "";
 	}
 
@@ -179,8 +179,8 @@ public:
 		else
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
 
-		this->genre = new char[strlen(genre) + 1];
-		strcpy(this->genre, genre);
+		/*this->genre = new char[strlen(genre) + 1];
+		strcpy(this->genre, genre);*/
 
 		if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
 			throw exception("Wrong format. Try again or write the word in capital letters");
@@ -209,11 +209,11 @@ public:
 
 		this->duration = m.duration;
 
-		if (m.genre != NULL)
+		/*if (m.genre != NULL)
 		{
 			this->genre = new char[strlen(m.genre) + 1];
 			strcpy(this->genre, m.genre);
-		}
+		}*/
 
 		this->format = m.format;
 	}
@@ -247,7 +247,7 @@ public:
 
 		this->duration = m.duration;
 
-		if (m.genre != NULL)
+		/*if (m.genre != NULL)
 		{
 			if (this->genre != NULL)
 			{
@@ -256,7 +256,7 @@ public:
 			}
 			this->genre = new char[strlen(m.genre) + 1];
 			strcpy(this->genre, m.genre);
-		}
+		}*/
 
 		this->format = m.format;
 		return *this;
@@ -327,11 +327,11 @@ public:
 			this->time = nullptr;
 		}
 
-		if (this->genre != NULL)
+		/*if (this->genre != NULL)
 		{
 			delete[] this->genre;
 			this->genre = nullptr;
-		}
+		}*/
 	}
 
 };
@@ -355,12 +355,13 @@ istream& operator>>(istream& in, Event& movie) {
 	cout << "Enter Duration (in minutes): ";
 	in >> movie.duration;
 
+	/*
 	// Input for genre
 	cout << "Enter Genre: ";
 	in.ignore(); // Ignore newline left in the buffer
 	in.getline(buffer, 100);
 	movie.setGenre(buffer);
-
+	*/
 	cout << "Enter Format: ";
 	in >> movie.format;
 
@@ -373,7 +374,7 @@ ostream& operator<<(ostream& out, const Event& movie) {
 	out << "Date: " << movie.date << endl;
 	out << "Time: " << movie.time << endl;
 	out << "Duration: " << movie.duration << " minutes" << endl;
-	out << "Genre: " << movie.genre << endl;
+	//out << "Genre: " << movie.genre << endl;
 	out << "Format: " << movie.format << endl;
 
 	return out;
