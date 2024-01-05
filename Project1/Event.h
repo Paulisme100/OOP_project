@@ -10,7 +10,7 @@ class Event {
 	char* time;
 	int duration;
 	//char* genre;
-	string format;
+	//string format;
 
 public:
 	//accessors
@@ -49,9 +49,9 @@ public:
 		return this->duration;
 	}
 
-	string getFormat() {
+	/*string getFormat() {
 		return this->format;
-	}
+	}*/
 
 	//setters
 	void setTitle(const char* title) {
@@ -131,7 +131,7 @@ public:
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
 	}
 
-	void setFormat(string format)
+	/*void setFormat(string format)
 	{
 		if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
 			throw exception("Wrong format. Try again or write the word in capital letters");
@@ -139,7 +139,7 @@ public:
 		{
 			this->format = format;
 		}
-	}
+	}*/
 
 	//default construct
 	Event()
@@ -149,7 +149,7 @@ public:
 		this->time = NULL;
 		this->duration = 0;
 		//this->genre = NULL;
-		this->format = "";
+		//this->format = "";
 	}
 
 	//constructor with parameters
@@ -182,12 +182,12 @@ public:
 		/*this->genre = new char[strlen(genre) + 1];
 		strcpy(this->genre, genre);*/
 
-		if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
+		/*if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
 			throw exception("Wrong format. Try again or write the word in capital letters");
 		else
 		{
 			this->format = format;
-		}
+		}*/
 	}
 
 	//copy construct
@@ -215,7 +215,7 @@ public:
 			strcpy(this->genre, m.genre);
 		}*/
 
-		this->format = m.format;
+		//this->format = m.format;
 	}
 
 	//overloading operator =
@@ -258,7 +258,7 @@ public:
 			strcpy(this->genre, m.genre);
 		}*/
 
-		this->format = m.format;
+		//this->format = m.format;
 		return *this;
 	}
 
@@ -362,9 +362,9 @@ istream& operator>>(istream& in, Event& movie) {
 	in.getline(buffer, 100);
 	movie.setGenre(buffer);
 	*/
-	cout << "Enter Format: ";
+	/*cout << "Enter Format: ";
 	in >> movie.format;
-
+	*/
 	return in;
 }
 
@@ -375,7 +375,7 @@ ostream& operator<<(ostream& out, const Event& movie) {
 	out << "Time: " << movie.time << endl;
 	out << "Duration: " << movie.duration << " minutes" << endl;
 	//out << "Genre: " << movie.genre << endl;
-	out << "Format: " << movie.format << endl;
+	//out << "Format: " << movie.format << endl;
 
 	return out;
 }
