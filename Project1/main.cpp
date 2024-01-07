@@ -1,9 +1,11 @@
 #include <iostream>
+#include <fstream>
 #include <string.h>
 #include <cstring>
 #include "Event.h"
 #include "EventLocation.h"
 #include "Ticket.h"
+#include "Seat.h"
 using namespace std;
 
 
