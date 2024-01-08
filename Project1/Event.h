@@ -5,7 +5,7 @@
 using namespace std;
 
 class Event {
-	char* title;
+	char title[60];
 	string date;
 	char* time;
 	int duration;
@@ -54,13 +54,9 @@ public:
 	}*/
 
 	//setters
-	void setTitle(const char* title) {
-		if (this->title != NULL)
-			delete[] this->title;
+	void setTitle(const char title[]) {
 
-		this->title = new char[strlen(title) + 1];
 		strcpy(this->title, title);
-
 	}
 
 	/*void setGenre(const char* genre) {
@@ -144,7 +140,7 @@ public:
 	//default construct
 	Event()
 	{
-		this->title = NULL;
+		strcpy(this->title, "");
 		this->date = "";
 		this->time = NULL;
 		this->duration = 0;
@@ -153,9 +149,8 @@ public:
 	}
 
 	//constructor with parameters
-	Event(const char* title, string date, const char * time, int duration)
+	Event(const char title[], string date, const char* time, int duration)
 	{
-		this->title = new char[strlen(title) + 1];
 		strcpy(this->title, title);
 
 		if (validateDate(date) == 0)
@@ -195,8 +190,8 @@ public:
 	{
 		if (m.title != NULL)
 		{
-			this->title = new char[strlen(m.title) + 1];
 			strcpy(this->title, m.title);
+			
 		}
 
 		this->date = m.date;
@@ -223,12 +218,6 @@ public:
 
 		if (m.title != NULL)
 		{
-			if (this->title != NULL)
-			{
-				delete[] this->title;
-				this->title = nullptr;
-			}
-			this->title = new char[strlen(m.title) + 1];
 			strcpy(this->title, m.title);
 		}
 
@@ -310,16 +299,11 @@ public:
 	}
 
 	//put friend so that the operators can have access to private attributes
-	friend istream& operator>>(istream& in, Event& movie);
-	friend ostream& operator<<(ostream& out, const Event& movie);
+	friend istream& operator>>(istream& in, Event& event);
+	friend ostream& operator<<(ostream& out, const Event& event);
 
 	//destructor 
 	~Event() {
-		if (this->title != NULL)
-		{
-			delete[] this->title;
-			this->title = nullptr;
-		}
 
 		if (this->time != NULL)
 		{
@@ -336,24 +320,24 @@ public:
 
 };
 
-istream& operator>>(istream& in, Event& movie) {
+istream& operator>>(istream& in, Event& event) {
 	char buffer[100];
 
 	cout << endl;
 	// Input for title
 	cout << endl << "Enter Title: ";
 	in.getline(buffer, 100);
-	movie.setTitle(buffer);
+	event.setTitle(buffer);
 
 	cout << "Enter Date (dd/mm/yyyy): ";
-	in >> movie.date;
+	in >> event.date;
 
 	cout << "Enter Time (hh:hh): ";
 	in >> buffer;
-	movie.setTime(buffer);
+	event.setTime(buffer);
 
 	cout << "Enter Duration (in minutes): ";
-	in >> movie.duration;
+	in >> event.duration;
 
 	/*
 	// Input for genre
@@ -368,12 +352,12 @@ istream& operator>>(istream& in, Event& movie) {
 	return in;
 }
 
-ostream& operator<<(ostream& out, const Event& movie) {
+ostream& operator<<(ostream& out, const Event& event) {
 	out << endl;
-	out << "Title: " << movie.title << endl;
-	out << "Date: " << movie.date << endl;
-	out << "Time: " << movie.time << endl;
-	out << "Duration: " << movie.duration << " minutes" << endl;
+	out << "Title: " << event.title << endl;
+	out << "Date: " << event.date << endl;
+	out << "Time: " << event.time << endl;
+	out << "Duration: " << event.duration << " minutes" << endl;
 	//out << "Genre: " << movie.genre << endl;
 	//out << "Format: " << movie.format << endl;
 
