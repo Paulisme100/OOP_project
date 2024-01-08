@@ -4,22 +4,38 @@
 #include <iostream>
 #include <string.h>
 #include <cstring>
+#include "Seat.h"
 using namespace std;
  
 class EventLocation {
 
-	char* locationName;
+	char locationName[50];
+	char* address;
 	int no_of_rows;
 	int* no_of_seats;
 	bool hasConcessionStand;
 
+	Seat** seatMatrix;
+	//Seat specialSeat = Seat(2365286, 1, standard);
+
 public:
 	//accessors
-	char* getLocName() {
+
+	char* getLocName()
+	{
 		if (this->locationName != NULL)
 		{
 			char* copy = new char[strlen(this->locationName) + 1];
 			strcpy(copy, this->locationName);
+			return copy;
+		}
+	}
+
+	char* getAddress() {
+		if (this->address != NULL)
+		{
+			char* copy = new char[strlen(this->address) + 1];
+			strcpy(copy, this->address);
 			return copy;
 		}
 	}
@@ -42,12 +58,17 @@ public:
 	}
 
 	//setters with validations
-	void setLocName(const char* title) {
-		if (this->locationName != NULL)
-			delete[] this->locationName;
+	void setLocName(const char loc[])
+	{
+		strcpy(this->locationName, loc);
+	}
 
-		this->locationName = new char[strlen(title) + 1];
-		strcpy(this->locationName, title);
+	void setAddress(const char* title) {
+		if (this->address != NULL)
+			delete[] this->address;
+
+		this->address = new char[strlen(title) + 1];
+		strcpy(this->address, title);
 
 	}
 
@@ -92,17 +113,20 @@ public:
 	//default construct
 	EventLocation()
 	{
-		this->locationName = nullptr;
+		strcpy(this->locationName, "");
+		this->address = NULL;
 		this->no_of_rows = 0;
-		this->no_of_seats = nullptr;
+		this->no_of_seats = NULL;
 		this->hasConcessionStand = false;
 	}
 
 	//constructor with parameters
-	EventLocation(const char* locationName, int no_of_rows, int* no_of_seats, bool hasConcessionStand)
+	EventLocation(const char locationName[], const char* address, int no_of_rows, int* no_of_seats, bool hasConcessionStand)
 	{
-		this->locationName = new char[strlen(locationName) + 1];
-		strcpy(this->locationName, locationName);
+		strcpy(this->locationName, "");
+
+		this->address = new char[strlen(address) + 1];
+		strcpy(this->address, address);
 
 		this->no_of_rows = no_of_rows;
 
@@ -118,10 +142,17 @@ public:
 	//copy construct
 	EventLocation(const EventLocation& e)
 	{
-		if (e.locationName != NULL)
-		{
-		this->locationName = new char[strlen(e.locationName) + 1];
 		strcpy(this->locationName, e.locationName);
+
+		if (e.address != NULL)
+		{
+			if (this->address != NULL)
+			{
+				delete[] this->address;
+				this->address = nullptr;
+			}
+			this->address = new char[strlen(e.address) + 1];
+			strcpy(this->address, e.address);
 		}
 
 		this->no_of_rows = e.no_of_rows;
@@ -141,15 +172,17 @@ public:
 	//overloading operator =
 	EventLocation& operator=(const EventLocation& e) {
 
-		if (e.locationName != NULL)
+		strcpy(this->locationName, e.locationName);
+
+		if (e.address != NULL)
 		{
-			if (this->locationName != NULL)
+			if (this->address != NULL)
 			{
-				delete[] this->locationName;
-				this->locationName = nullptr;
+				delete[] this->address;
+				this->address = nullptr;
 			}
-			this->locationName = new char[strlen(e.locationName) + 1];
-			strcpy(this->locationName, e.locationName);
+			this->address = new char[strlen(e.address) + 1];
+			strcpy(this->address, e.address);
 		}
 
 		this->no_of_rows = e.no_of_rows;
@@ -194,13 +227,20 @@ public:
 };
 
 istream& operator>>(istream& in, EventLocation& location) {
-
-	// Input for locationName
+	
+	// Input for Location Name
 	cout << "Enter Location Name: ";
 	char buffer[100];
 	in.ignore(); // Ignore newline left in the buffer
 	in.getline(buffer, 100);
 	location.setLocName(buffer);
+	strcpy(buffer, "");
+
+	// Input for Address
+	cout << "Enter Address: ";
+	in.ignore(); 
+	in.getline(buffer, 100);
+	location.setAddress(buffer);
 
 	// Input for number of rows
 	cout << "Enter Number of rows: ";
@@ -226,7 +266,8 @@ istream& operator>>(istream& in, EventLocation& location) {
 
 ostream& operator<<(ostream& out, const EventLocation& location) {
 
-	out << "Location Name: " << location.locationName << endl;
+	out << "Location: " << location.locationName << endl;
+	out << "Address: " << location.address << endl;
 	out << "Number of rows: " << location.no_of_rows << endl;
 	out << "Number of reats per row: ";
 	for (int i = 0; i < location.no_of_rows; i++) {

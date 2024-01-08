@@ -153,7 +153,7 @@ public:
 	}
 
 	//constructor with parameters
-	Event(const char* title, string date, const char * time, int duration, const char* genre, string format)
+	Event(const char* title, string date, const char * time, int duration)
 	{
 		this->title = new char[strlen(title) + 1];
 		strcpy(this->title, title);

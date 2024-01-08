@@ -10,7 +10,7 @@ using namespace std;
 
 
 int main()
-{
+{/*
 	Event movie1("Inception", "23/09/2023", "12:30", 150, "sci-fi", "3D");
 	//cout << "Title is: "<<movie1.getTitle() <<endl<< "Date: "<< movie1.getDate() <<endl<< "Time: "<< movie1.getTime()<<endl<< "Duration: " << movie1.getDuration()<<endl<<"Genre: " << movie1.getGenre()<<endl << "Format: "<< movie1.getFormat();
 	Event movie2(movie1);
@@ -26,9 +26,10 @@ int main()
 
 	/*Movie movie3;
 	cin >> movie3;
-	cout << movie3;*/
-
-	int seatsPerRow[] = { 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25 };
+	cout << movie3;
+*/
+	/*
+	int seatsPerRow[] = {20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25};
 	EventLocation loc1("Afi Palace Cotroceni", 20, seatsPerRow, true);
 	int rows = loc1.get_no_of_rows();
 
@@ -63,4 +64,12 @@ int main()
 		cout << endl<< "Ticket1 is cheaper than ticket2";
 	else
 		cout<< endl << "Ticket1 is not cheaper than ticket2";
+	*/
+	
+	int seatsPerRow[] = { 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25 };
+	EventLocation loc1("Afi Palace Cotroceni", "Bulevardul General Paul Teodorescu 4", 20, seatsPerRow, true);
+	loc1.setLocName("Afi Palace Cotroceni");
+	cout<<loc1;
+
+
 }

@@ -33,11 +33,6 @@ public:
 		}
 	}
 
-	int getPrice()
-	{
-		return this->price;;
-	}
-
 	//setters
 	void set_seat_code(int code)
 	{
@@ -88,6 +83,12 @@ public:
 	{
 		if (t.movieTitle != NULL)
 		{
+			if (this->movieTitle != NULL)
+			{
+				delete[] this->movieTitle;
+				this->movieTitle = nullptr;
+			}
+
 			this->movieTitle = new char[strlen(t.movieTitle) + 1];
 			strcpy(this->movieTitle, t.movieTitle);
 		}
