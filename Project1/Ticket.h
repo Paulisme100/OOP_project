@@ -8,7 +8,9 @@ using namespace std;
 class Ticket {
 	const int uid;
 	const char* purchaseDate;
-	int seat_code;
+	//int seat_code;
+	int row;
+	int column;
 	char* buyerName; //or eventType
 	char eventLocation[50];
 	int price;
@@ -32,9 +34,19 @@ public:
 		}
 	}
 
-	int get_seat_code()
+	/*int get_seat_code()
 	{
 		return this->seat_code;
+	}*/
+
+	int getRow()
+	{
+		return this->row;
+	}
+
+	int getColumn()
+	{
+		return this->column;
 	}
 
 	char* getbuyerName() {
@@ -53,9 +65,19 @@ public:
 	}
 
 	//setters
-	void set_seat_code(int code)
+	/*void set_seat_code(int code)
 	{
 		this->seat_code = code;
+	}*/
+
+	void setRow(int value)
+	{
+		this->row = value;
+	}
+
+	void setColumn(int value)
+	{
+		this->column = value;
 	}
 	
 	void setBuyerName(const char* buyerName) {
@@ -87,19 +109,29 @@ public:
 		this->price += amount;
 	}
 
+	//2nd method: compute the code of the seat 
+	int seatCode()
+	{
+		int c = this->row + this->column + 1;
+		return c;
+	}
+
 	//default construct
 	Ticket() :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
-		this->seat_code = 0;
+		//this->seat_code = 0;
+		this->row= 0;
+		this->column = 0;
 		this->buyerName = NULL;
 		strcpy(this->eventLocation, "");
 		this->price = 0;
 	}
 
 	//constructor with parameters
-	Ticket(int seat_code, const char* buyerName, const char eventLocation[], int price) :uid(++ticket_counter), purchaseDate(getCurrentTime())
+	Ticket(int row, int column, const char* buyerName, const char eventLocation[], int price) :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
-		this->seat_code = seat_code;
+		this->row = row;
+		this->column = column;
 
 		this->buyerName = new char[strlen(buyerName) + 1];
 		strcpy(this->buyerName, buyerName);
@@ -115,7 +147,8 @@ public:
 	//cpy constructor
 	Ticket(const Ticket& t) :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
-		this->seat_code = t.seat_code;
+		this->row = t.row;
+		this->column = t.column;
 
 		if (t.buyerName != NULL)
 		{
@@ -136,7 +169,8 @@ public:
 
 	Ticket& operator=(const Ticket& t)
 	{
-		this->seat_code = t.seat_code;
+		this->row = t.row;
+		this->column = t.column;
 
 		if (t.buyerName != NULL)
 		{
@@ -211,11 +245,11 @@ public:
 	}
 
 	//postincrementation
-	Ticket& operator++(int) {
+	Ticket& operator++(int) {    //smth
 
 		Ticket copy = *this;
 		copy.price++;
-		return copy;          //smth
+		return copy;          
 	}
 
 	friend istream& operator>>(istream& in, Ticket& ticket);
@@ -234,8 +268,10 @@ int Ticket::ticket_counter = 0;
 
 istream& operator>>(istream& in, Ticket& ticket) {
 
-	cout << "Enter Seat Code: ";
-	in >> ticket.seat_code;
+	cout << "Enter Row: ";
+	in >> ticket.row;
+	cout << "Enter Column: ";
+	in >> ticket.column;
 
 	cout << "Enter Buyer Name: ";
 	char buffer[100];
@@ -262,7 +298,10 @@ ostream& operator<<(ostream& out, const Ticket& ticket) {
 	out << "Ticket Information:" << endl;
 	out << "UID: " << ticket.uid << endl;
 	out << "Purchase Date: " << ticket.purchaseDate;
-	out << "Seat Code: " << ticket.seat_code << endl;
+	out << "Seat row: " << ticket.row << endl;
+	out << "Seat column: " << ticket.column << endl;
+	out << "Seat Code: " << ticket.row + ticket.column + 1 << endl;
+	//out << "Seat Code: " << ticket.seat_code << endl;
 	out << "Buyer Name: " << ticket.buyerName << endl;
 	out << "Event Location: " << ticket.eventLocation << endl;
 	out << "Price: " << ticket.price << endl;
