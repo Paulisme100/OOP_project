@@ -277,7 +277,7 @@ public:
 	//overload operator []
 	char operator[](int i)
 	{
-		if (i >= 0 && i <= strlen(this->title))
+		if (this->title != NULL && i >= 0 && i <= strlen(this->title))
 		{
 			return this->title[i];
 		}
@@ -285,6 +285,17 @@ public:
 		{
 			throw exception("the index is negative or greater the length of title");
 		}
+	}
+
+	//overload operator !
+	//to check if the event is set or not
+	bool operator!() {
+		return (strlen(title) == 0) && (date.empty()) && (time == NULL) && (duration == 0);
+	}
+
+	//overload operator <=
+	bool operator<=(const Event& e) {
+		return this->duration <= e.duration;
 	}
 
 	//overload operator +

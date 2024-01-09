@@ -200,6 +200,19 @@ public:
 		return *this;
 	}
 
+	//overload operator []
+	char operator[](int i)
+	{
+		if (this->locationName != NULL && i >= 0 && i <= strlen(this->locationName))
+		{
+			return this->locationName[i];
+		}
+		else
+		{
+			throw exception("The index is negative or greater the length of the name");
+		}
+	}
+
 	//overload operator--
 	void operator--() {
 		for (int i = 0; i < this->no_of_rows; i++)
@@ -211,6 +224,11 @@ public:
 	bool operator!() {
 		bool is = !hasConcessionStand;
 		return is;
+	}
+
+	//overload operator >
+	bool operator>(const EventLocation& e) {
+		return this->no_of_rows > e.no_of_rows;
 	}
 
 	friend istream& operator>>(istream& in, EventLocation& eventLocation);
