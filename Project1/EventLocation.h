@@ -13,10 +13,11 @@ class EventLocation {
 	char* address;
 	int no_of_rows;
 	int* no_of_seats;
+	int rows_for_VIP;
+	int rows_for_DisabledPeople;
 	bool hasConcessionStand;
 
 	Seat** seatMatrix;
-	//Seat specialSeat = Seat(2365286, 1, standard);
 
 public:
 	//accessors
@@ -93,6 +94,17 @@ public:
 		this->hasConcessionStand = is;
 	}
 
+	void initializeMatrix()
+	{
+		if (this->no_of_rows != 0 && this->no_of_seats != NULL)
+		{
+			this->seatMatrix = new Seat*[this->no_of_rows];
+			for (int i = 0; i < this->no_of_rows; i++)
+				seatMatrix[i] = new Seat[this->no_of_seats[i]];
+		}
+
+	}
+
 	//first generic method; it calculates the total number of seats
 	int max_no_of_seats() {
 		int totalSeats = 0;
@@ -114,14 +126,17 @@ public:
 	EventLocation()
 	{
 		strcpy(this->locationName, "");
+		Seat** seatMatrix = nullptr;
 		this->address = NULL;
 		this->no_of_rows = 0;
 		this->no_of_seats = NULL;
+		this->rows_for_DisabledPeople = 0;
+		this->rows_for_VIP = 0;
 		this->hasConcessionStand = false;
 	}
 
 	//constructor with parameters
-	EventLocation(const char locationName[], const char* address, int no_of_rows, int* no_of_seats, bool hasConcessionStand)
+	EventLocation(const char locationName[], const char* address, int no_of_rows, int* no_of_seats, int rows_for_VIP, int rows_for_DisabledPeople, bool hasConcessionStand)
 	{
 		strcpy(this->locationName, "");
 
@@ -136,7 +151,73 @@ public:
 		for (int i = 0; i < this->no_of_rows; i++)
 			this->no_of_seats[i] = no_of_seats[i];
 
+		this->rows_for_VIP = rows_for_VIP;
+		this->rows_for_DisabledPeople = rows_for_DisabledPeople;
+
 		this->hasConcessionStand = hasConcessionStand;
+
+		this->initializeMatrix();
+
+		//set the seatMatrix according the values received for rows, seats per row, seats for disabled and vip
+		if (this->no_of_rows != 0 && this->no_of_seats != NULL)
+		{
+			for (int i = 0; i < this->rows_for_DisabledPeople; i++)
+				for (int j = 0; j < this->no_of_seats[i]; j++)
+					seatMatrix[i][j] = Seat(0, Category::disability);
+
+			int vipStartRow = this->rows_for_DisabledPeople;
+			int vipEndRow = this->rows_for_DisabledPeople + this->rows_for_VIP;
+			for(int i = vipStartRow; i < vipEndRow; i++)
+				for (int j = 0; j < this->no_of_seats[i]; j++)
+					seatMatrix[i][j] = Seat(0, Category::VIP);
+			
+			for (int i = vipEndRow; i < this->no_of_rows; i++)
+				for (int j = 0; j < this->no_of_seats[i]; j++)
+					seatMatrix[i][j] = Seat(0, Category::standard);
+		}
+
+	}
+
+	void printSeatAvailabilityMatrix()
+	{
+		if (this->no_of_rows == 0 || this->no_of_seats == nullptr || this->seatMatrix == nullptr)
+		{
+			cout << "Seat matrix is not initialized or has invalid dimensions." << endl;
+			return;
+		}
+
+		cout << "Seat Availability Matrix:" << endl;
+
+		for (int i = 0; i < this->no_of_rows; i++)
+		{
+			cout << "Row " << i + 1 << ": ";
+			for (int j = 0; j < this->no_of_seats[i]; j++)
+			{
+				cout << this->seatMatrix[i][j].getAvailability() << " ";
+			}
+			cout << endl;
+		}
+	}
+
+	void printSeatCategoryMatrix()
+	{
+		if (this->no_of_rows == 0 || this->no_of_seats == nullptr || this->seatMatrix == nullptr)
+		{
+			cout << "Seat matrix is not initialized or has invalid dimensions." << endl;
+			return;
+		}
+
+		cout << "Seat Category Matrix:" << endl;
+
+		for (int i = 0; i < this->no_of_rows; i++)
+		{
+			cout << "Row " << i + 1 << ": ";
+			for (int j = 0; j < this->no_of_seats[i]; j++)
+			{
+				cout << this->seatMatrix[i][j].getCategory() << " ";
+			}
+			cout << endl;
+		}
 	}
 
 	//copy construct
@@ -255,6 +336,14 @@ public:
 		{
 			delete[] this->address;
 			this->address = nullptr;
+		}
+
+		if (this->seatMatrix != nullptr) {
+			for (int i = 0; i < this->no_of_rows; i++) {
+				delete[] this->seatMatrix[i];
+			}
+			delete[] this->seatMatrix;
+			this->seatMatrix = nullptr;
 		}
 	}
 };
