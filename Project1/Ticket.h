@@ -1,11 +1,13 @@
 #pragma once
 #include <iostream>
 #include <string.h>
+#include <chrono>
 
 using namespace std;
 
 class Ticket {
 	const int uid;
+	const char* purchaseDate;
 	int seat_code;
 	char* buyerName; //or eventType
 	char eventLocation[50];
@@ -44,6 +46,12 @@ public:
 		}
 	}
 
+	const char* getCurrentTime() const {
+		auto currentTime = chrono::system_clock::now();
+		auto timePoint = chrono::system_clock::to_time_t(currentTime);
+		return ctime(&timePoint);
+	}
+
 	//setters
 	void set_seat_code(int code)
 	{
@@ -80,7 +88,7 @@ public:
 	}
 
 	//default construct
-	Ticket() :uid(++ticket_counter)
+	Ticket() :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
 		this->seat_code = 0;
 		this->buyerName = NULL;
@@ -89,7 +97,7 @@ public:
 	}
 
 	//constructor with parameters
-	Ticket(int seat_code, const char* buyerName, const char eventLocation[], int price) :uid(++ticket_counter)
+	Ticket(int seat_code, const char* buyerName, const char eventLocation[], int price) :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
 		this->seat_code = seat_code;
 
@@ -105,7 +113,7 @@ public:
 	}
 
 	//cpy constructor
-	Ticket(const Ticket& t) :uid(++ticket_counter)
+	Ticket(const Ticket& t) :uid(++ticket_counter), purchaseDate(getCurrentTime())
 	{
 		this->seat_code = t.seat_code;
 
@@ -250,9 +258,10 @@ istream& operator>>(istream& in, Ticket& ticket) {
 
 ostream& operator<<(ostream& out, const Ticket& ticket) {
 
-	cout << endl;
+	out << endl;
 	out << "Ticket Information:" << endl;
 	out << "UID: " << ticket.uid << endl;
+	out << "Purchase Date: " << ticket.purchaseDate;
 	out << "Seat Code: " << ticket.seat_code << endl;
 	out << "Buyer Name: " << ticket.buyerName << endl;
 	out << "Event Location: " << ticket.eventLocation << endl;
