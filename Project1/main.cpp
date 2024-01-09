@@ -28,59 +28,65 @@ int main()
 	cin >> movie3;
 	cout << movie3;
 */
-	/*
-	int seatsPerRow[] = {20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25};
-	EventLocation loc1("Afi Palace Cotroceni", 20, seatsPerRow, true);
-	int rows = loc1.get_no_of_rows();
+/*
+int seatsPerRow[] = {20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25};
+EventLocation loc1("Afi Palace Cotroceni", 20, seatsPerRow, true);
+int rows = loc1.get_no_of_rows();
 
-	//cout <<endl<< loc1;
-	loc1.searchforFood("Nachos");
+//cout <<endl<< loc1;
+loc1.searchforFood("Nachos");
 
-	if (!loc1) {
-		cout << endl<< "Unfortunately, there is no concession stand." << endl;
-	}
-	else {
-		cout <<endl<< "Yes. There is a concession stand." << endl;
-	}
-	
-	--loc1;
+if (!loc1) {
+	cout << endl<< "Unfortunately, there is no concession stand." << endl;
+}
+else {
+	cout <<endl<< "Yes. There is a concession stand." << endl;
+}
 
-	EventLocation loc2;
-	loc2 = loc1;
+--loc1;
 
-	cout << endl << loc2;
-	
-	Ticket ticket1("Inception", 73, 25);
-	Ticket ticket2(ticket1);
+EventLocation loc2;
+loc2 = loc1;
 
-	cout << endl << ticket1.getUid() << endl;
+cout << endl << loc2;
 
-	if (ticket1 == ticket2)
-		cout << "That's a problem! ";
-	else
-		cout << "It's ok! ";
+Ticket ticket1("Inception", 73, 25);
+Ticket ticket2(ticket1);
 
-	if (ticket1 < ticket2)
-		cout << endl<< "Ticket1 is cheaper than ticket2";
-	else
-		cout<< endl << "Ticket1 is not cheaper than ticket2";
-	*/
-	
+cout << endl << ticket1.getUid() << endl;
+
+if (ticket1 == ticket2)
+	cout << "That's a problem! ";
+else
+	cout << "It's ok! ";
+
+if (ticket1 < ticket2)
+	cout << endl<< "Ticket1 is cheaper than ticket2";
+else
+	cout<< endl << "Ticket1 is not cheaper than ticket2";
+*/
+
 	int seatsPerRow[] = { 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25 };
-	EventLocation loc1("Afi Palace Cotroceni", "Bulevardul General Paul Teodorescu 4", 20, seatsPerRow, true);
+	EventLocation loc1("Afi Palace Cotroceni", "Bulevardul General Paul Teodorescu 4", 20, seatsPerRow, 2, 1, true);
 	loc1.setLocName("Afi Palace Cotroceni");
-	cout<<loc1;
+	cout << loc1 << endl;
+	loc1.printSeatAvailabilityMatrix();
+	cout << endl;
+	loc1.printSeatCategoryMatrix();
 
 	//loc1--;
 	--loc1;
 
 	//cout << endl << "Loc1 upodated: " << endl << loc1;
-
-	Ticket ticket1(2376542, "Costel Avram", "Afi Palace Cotroceni", 25);
+/*
+	Ticket ticket1(1, 2,"Costel Avram", "Afi Palace Cotroceni", 25);
 	cout << endl << ticket1;
-	ticket1 = (ticket1-5);    //ticket1.operator-(5);
+	//ticket1 = (ticket1-5);    //ticket1.operator-(5);
 	//++ticket1;
 	//ticket1 = ticket1++;
 	cout <<endl<<"Updated!!!"<<ticket1;
+*/
+
+	Movie movie1;
 
 }
