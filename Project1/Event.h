@@ -1,16 +1,15 @@
 #include <iostream>
 #include <string.h>
 #include <cstring>
-//#include "Movie.h"
+
 using namespace std;
 
 class Event {
+protected:
 	char title[60];
 	string date;
 	char* time;
 	int duration;
-	//char* genre;
-	//string format;
 
 public:
 	//accessors
@@ -58,15 +57,6 @@ public:
 
 		strcpy(this->title, title);
 	}
-
-	/*void setGenre(const char* genre) {
-		if (this->genre != NULL)
-			delete[] this->title;
-
-		this->genre = new char[strlen(genre) + 1];
-		strcpy(this->genre, genre);
-
-	}*/
 
 	bool validateDate(const string date) {
 
@@ -127,16 +117,6 @@ public:
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
 	}
 
-	/*void setFormat(string format)
-	{
-		if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
-			throw exception("Wrong format. Try again or write the word in capital letters");
-		else
-		{
-			this->format = format;
-		}
-	}*/
-
 	//default construct
 	Event()
 	{
@@ -174,15 +154,6 @@ public:
 		else
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
 
-		/*this->genre = new char[strlen(genre) + 1];
-		strcpy(this->genre, genre);*/
-
-		/*if (format != "4D" && format != "3D" && format != "4XD" && format != "IMAX")
-			throw exception("Wrong format. Try again or write the word in capital letters");
-		else
-		{
-			this->format = format;
-		}*/
 	}
 
 	//copy construct
@@ -259,7 +230,7 @@ public:
 	}
 
 	//second generic method; it transforms the hour and minutes into integers and then shows a message 
-	//saying when will the movie start and what is the delay given by the advertisements
+	//saying when will the event start and what is the delay given by the advertisements or arrangements
 	void startMoment(int delay) {
 		int hour1 = this->time[0] - '0';
 		int hour2 = this->time[1] - '0';
@@ -271,7 +242,7 @@ public:
 		int mm;
 		mm = min1 * 10 + min2;
 
-		cout <<endl<< "The start date is " << hh << ":" << mm << ". But the movie will begin after the " << delay << " minutes of advertisement.";
+		cout <<endl<< "The moment when the event should start is " << hh << ":" << mm << ". But the main event will begin after the " << delay << " minutes of advertisements and preparation.";
 	}
 
 	//overload operator []
@@ -374,3 +345,47 @@ ostream& operator<<(ostream& out, const Event& event) {
 
 	return out;
 }
+
+
+
+enum Format { Format2D = 0, Format3D = 1, Format4D = 2, IMAX = 3 };
+
+class Movie : public Event {
+
+	string genre;
+	Format formatType;
+
+public:
+
+	string getGenre() {
+		return this->genre;
+	}
+
+	Movie()
+	{
+		this->genre = "";
+		this->formatType = Format2D;
+	}
+
+};
+
+class Concert : public Event {
+
+	string artistName;
+	string musicGenre;
+
+public:
+
+
+};
+
+class StandUpShow : public Event {
+
+	int no_of_comedians;
+	string* comedians;
+	char * specialGuest;
+
+public:
+
+
+};
