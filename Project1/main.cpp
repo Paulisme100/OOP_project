@@ -71,5 +71,16 @@ int main()
 	loc1.setLocName("Afi Palace Cotroceni");
 	cout<<loc1;
 
+	//loc1--;
+	--loc1;
+
+	//cout << endl << "Loc1 upodated: " << endl << loc1;
+
+	Ticket ticket1(2376542, "Costel Avram", "Afi Palace Cotroceni", 25);
+	cout << endl << ticket1;
+	ticket1 = (ticket1-5);    //ticket1.operator-(5);
+	//++ticket1;
+	//ticket1 = ticket1++;
+	cout <<endl<<"Updated!!!"<<ticket1;
 
 }

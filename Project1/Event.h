@@ -299,15 +299,15 @@ public:
 	}
 
 	//overload operator +
-	char operator+(int add)
+	//to extend the duration of the event
+	Event operator+(int add)
 	{
-		if (duration <= 0)
-			throw exception("the number is negative or null");
-		else
-		{
-			this->duration += add;
-		}
+		Event copy = *this;
+		copy.duration = copy.duration + add;
+		return copy;
 	}
+
+	
 
 	//put friend so that the operators can have access to private attributes
 	friend istream& operator>>(istream& in, Event& event);

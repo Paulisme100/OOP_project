@@ -213,13 +213,6 @@ public:
 		}
 	}
 
-	//overload operator--
-	void operator--() {
-		for (int i = 0; i < this->no_of_rows; i++)
-			if(this->no_of_seats[i] > 0)
-				this->no_of_seats[i] = this->no_of_seats[i] - 1;
-	}
-
 	//overload operator !
 	bool operator!() {
 		bool is = !hasConcessionStand;
@@ -231,6 +224,22 @@ public:
 		return this->no_of_rows > e.no_of_rows;
 	}
 
+	EventLocation operator-(int removeSeats)
+	{
+		EventLocation copy = *this;
+		for (int i = 0; i < copy.no_of_rows; i++)
+			if (copy.no_of_seats[i] > 0)
+				copy.no_of_seats[i] = copy.no_of_seats[i] - removeSeats;
+		return copy;
+	}
+	
+	//overload operator--
+	void operator--() {
+		for (int i = 0; i < this->no_of_rows; i++)
+			if(this->no_of_seats[i] > 0)
+				this->no_of_seats[i] = this->no_of_seats[i] - 1;
+	}
+
 	friend istream& operator>>(istream& in, EventLocation& eventLocation);
 	friend ostream& operator<<(ostream& out, const EventLocation& eventLocation);
 
@@ -240,6 +249,12 @@ public:
 		if (this->no_of_seats != nullptr) {
 			delete[] this->no_of_seats;
 			this->no_of_seats = nullptr;
+		}
+
+		if (this->address != NULL)
+		{
+			delete[] this->address;
+			this->address = nullptr;
 		}
 	}
 };

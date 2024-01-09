@@ -73,6 +73,12 @@ public:
 			this->price = newPrice;
 	}
 
+	//generic method: increase the price
+	void increasePrice(int amount)
+	{
+		this->price += amount;
+	}
+
 	//default construct
 	Ticket() :uid(++ticket_counter)
 	{
@@ -173,12 +179,35 @@ public:
 			return 0;
 	}
 
+	//overload operator <
 	bool operator <(const Ticket& ticket)
 	{
 		if (this->price < ticket.price)
 			return 1;
 		else
 			return 0;
+	}
+
+	//overload operator -
+	Ticket operator-(int discount)   //smth
+	{
+		Ticket copy = *this;
+		copy.price = copy.price - discount;
+		return copy; 
+	}
+	
+	//preincrementation
+	Ticket& operator++() {
+		++this->price;
+		return *this;
+	}
+
+	//postincrementation
+	Ticket& operator++(int) {
+
+		Ticket copy = *this;
+		copy.price++;
+		return copy;          //smth
 	}
 
 	friend istream& operator>>(istream& in, Ticket& ticket);
