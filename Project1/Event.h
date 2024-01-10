@@ -22,15 +22,6 @@ public:
 		}
 	}
 
-	/*char* getGenre() {
-		if (this->genre != NULL)
-		{
-			char* copy = new char[strlen(this->genre) + 1];
-			strcpy(copy, this->genre);
-			return copy;
-		}
-	}*/
-
 	string getDate() {
 		return this->date;
 	}
@@ -47,10 +38,6 @@ public:
 	int getDuration() {
 		return this->duration;
 	}
-
-	/*string getFormat() {
-		return this->format;
-	}*/
 
 	//setters
 	void setTitle(const char title[]) {
@@ -115,6 +102,22 @@ public:
 			this->duration = minutes;
 		else
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
+	}
+
+	//generic method to show the title in Uppercase
+	void showUppercase() {
+
+		char copy[60];
+		strcpy(copy, this->title);
+		for (int i = 0; i<strlen(copy); ++i) {
+			if (copy[i] >= 'a' && copy[i] <= 'z') {
+				
+				copy[i] = copy[i] - 'a' + 'A';
+			}
+		}
+		for (int i = 0; i < strlen(copy); ++i) {
+			cout << copy[i];
+		}
 	}
 
 	//default construct
@@ -361,22 +364,123 @@ public:
 		return this->genre;
 	}
 
+	string getCategoryName() const
+	{
+		if (this->formatType == Format::Format2D)
+			return "standard";
+		else if (this->formatType == Format::Format3D)
+			return "VIP";
+		else if (this->formatType == Format::Format4D)
+			return "disability";
+		else if (this->formatType == Format::IMAX)
+			return "IMAX";
+	}
+
 	Movie()
 	{
 		this->genre = "";
 		this->formatType = Format2D;
 	}
 
+	Movie(const char title[], string date, const char* time, int duration, string genre, Format formatType) :Event(title, date, time, duration)
+	{
+		this->genre = genre;
+		this->formatType = formatType;
+	}
+
+	Movie(const Movie& m) :Event(m)
+	{
+		this->genre = m.genre;
+		this->formatType = m.formatType;
+	}
+
+	void showUppercase() {
+		this->Event::showUppercase();
+		cout << endl;
+
+		const char* copy1 = this->genre.c_str();
+		char* copy2 = new char[strlen(copy1) + 1];
+		strcpy(copy2, copy1);
+
+		for (int i = 0; i < strlen(copy2); ++i) {
+			if (copy2[i] >= 'a' && copy2[i] <= 'z') {
+
+				copy2[i] = copy2[i] - 'a' + 'A';
+			}
+		}
+		for (int i = 0; i < strlen(copy2); ++i) {
+			cout << copy2[i];
+		}
+	}
+
+	~Movie() {
+
+	}
 };
+
 
 class Concert : public Event {
 
-	string artistName;
+	char* artistName;
 	string musicGenre;
 
 public:
 
+	Concert()
+	{
+		this->artistName = NULL;
+		this->musicGenre = "";
+	}
 
+	Concert(const char title[], string date, const char* time, int duration, const char* artistName, string musicGenre) :Event(title, date, time, duration)
+	{
+		this->artistName = new char[strlen(artistName) + 1];
+		strcpy(this->artistName, artistName);
+
+		this->musicGenre = musicGenre;
+	}
+
+	Concert(const Concert& m) :Event(m)
+	{
+		if (m.artistName != NULL)
+		{
+			if (this->artistName != NULL)
+			{
+				delete[] this->artistName;
+				this->artistName = nullptr;
+			}
+
+			this->artistName = new char[strlen(m.artistName) + 1];
+			strcpy(this->artistName, m.artistName);
+		}
+		this->musicGenre = m.musicGenre;
+	}
+
+	void showUppercase() {
+		this->Event::showUppercase();
+		cout << endl;
+
+		char copy1[60];
+		strcpy(copy1, this->artistName);
+		for (int i = 0; i < strlen(copy1); ++i) {
+			if (copy1[i] >= 'a' && copy1[i] <= 'z') {
+
+				copy1[i] = copy1[i] - 'a' + 'A';
+			}
+		}
+		for (int i = 0; i < strlen(copy1); ++i) {
+			cout << copy1[i];
+		}
+	}
+
+	~Concert() {
+
+		if (this->artistName != NULL)
+		{
+			delete[] this->artistName;
+			this->artistName = nullptr;
+		}
+	}
 };
 
 class StandUpShow : public Event {
@@ -387,5 +491,69 @@ class StandUpShow : public Event {
 
 public:
 
+	StandUpShow() {
+		this->no_of_comedians = 0;
+		this->comedians = NULL;
+		this->specialGuest = NULL;
+	}
 
+	StandUpShow(const char title[], string date, const char* time, int duration, int no_of_comedians, const string* comedians, const char * specialGuest):Event(title, date, time, duration) {
+
+		this->no_of_comedians = no_of_comedians;
+
+		this->comedians = new string[no_of_comedians];
+		for (int i = 0; i < no_of_comedians; ++i) {
+			this->comedians[i] = comedians[i];
+		}
+
+		this->specialGuest = new char[strlen(specialGuest) + 1];
+		strcpy(this->specialGuest, specialGuest);
+
+	}
+
+	StandUpShow(const StandUpShow& s) :Event(s) {
+
+		this->no_of_comedians = s.no_of_comedians;
+
+		this->comedians = new string[s.no_of_comedians];
+		for (int i = 0; i < s.no_of_comedians; ++i) {
+			this->comedians[i] = s.comedians[i];
+		}
+
+		this->specialGuest = new char[strlen(s.specialGuest) + 1];
+		strcpy(this->specialGuest, s.specialGuest);
+	}
+
+	void showUppercase() {
+		this->Event::showUppercase();
+		cout << endl;
+
+		char copy1[60];
+		strcpy(copy1, this->specialGuest);
+		for (int i = 0; i < strlen(copy1); ++i) {
+			if (copy1[i] >= 'a' && copy1[i] <= 'z') {
+
+				copy1[i] = copy1[i] - 'a' + 'A';
+			}
+		}
+		for (int i = 0; i < strlen(copy1); ++i) {
+			cout << copy1[i];
+		}
+	}
+
+
+	~StandUpShow() {
+
+		if (this->specialGuest != NULL)
+		{
+			delete[] this->specialGuest;
+			this->specialGuest = nullptr;
+		}
+
+		if (this->comedians != NULL)
+		{
+			delete[] this->comedians;
+			this->comedians = nullptr;
+		}
+	}
 };
