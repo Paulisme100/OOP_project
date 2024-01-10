@@ -1,0 +1,57 @@
+Afi Palace Cotroceni
+Bulevardul General Paul Teodorescu 4
+20
+20 
+25 
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+2
+1
+true
+Hard Rock Cafe Bucharest
+Şoseaua Pavel D. Kiseleff 32
+25
+20 
+25 
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+25
+20
+3
+2
+true

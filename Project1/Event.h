@@ -285,7 +285,7 @@ public:
 	friend istream& operator>>(istream& in, Event& event);
 	friend ostream& operator<<(ostream& out, const Event& event);
 
-	void readEventData(ifstream& file) {
+	virtual void readEventData(ifstream& file) {
 		if (!file.is_open())
 		{
 			cout << "***Error! The file can't be opened or is missing.";
@@ -294,7 +294,6 @@ public:
 		{
 			//read title
 			char buffer[60];
-			file.ignore();
 			file.getline(buffer, 60);
 			this->setTitle(buffer);
 
@@ -387,11 +386,11 @@ public:
 	string getCategoryName() const
 	{
 		if (this->formatType == Format::Format2D)
-			return "standard";
+			return "Format2D";
 		else if (this->formatType == Format::Format3D)
-			return "VIP";
+			return "Format3D";
 		else if (this->formatType == Format::Format4D)
-			return "disability";
+			return "Format4D";
 		else if (this->formatType == Format::IMAX)
 			return "IMAX";
 	}
@@ -400,6 +399,7 @@ public:
 		this->genre = g;
 	}
 
+	
 	void setFormat(const string formatString) {
 		if (formatString == "Format2D") {
 			formatType = Format2D;
@@ -415,6 +415,8 @@ public:
 		}
 		else throw exception("Wrong type! Enter a valid type! ");
 	}
+	
+
 
 	Movie()
 	{

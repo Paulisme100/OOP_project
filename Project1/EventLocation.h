@@ -324,7 +324,7 @@ public:
 	friend istream& operator>>(istream& in, EventLocation& eventLocation);
 	friend ostream& operator<<(ostream& out, const EventLocation& eventLocation);
 
-	void readEventData(ifstream& file) {
+	void readData(ifstream& file) {
 		if (!file.is_open())
 		{
 			cout << "***Error! The file can't be opened or is missing.";
@@ -333,7 +333,7 @@ public:
 		{
 			// Read Location Name
 			char buffer[70];
-			file.ignore();
+			//file.ignore();
 			file.getline(buffer, 70);
 			setLocName(buffer);
 
