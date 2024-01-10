@@ -105,7 +105,7 @@ public:
 	}
 
 	//generic method to show the title in Uppercase
-	void showUppercase() {
+	virtual void showUppercase() {
 
 		char copy[60];
 		strcpy(copy, this->title);
@@ -281,11 +281,37 @@ public:
 		return copy;
 	}
 
-	
-
 	//put friend so that the operators can have access to private attributes
 	friend istream& operator>>(istream& in, Event& event);
 	friend ostream& operator<<(ostream& out, const Event& event);
+
+	void readEventData(ifstream& file) {
+		if (!file.is_open())
+		{
+			cout << "***Error! The file can't be opened or is missing.";
+		}
+		else
+		{
+			//read title
+			char buffer[60];
+			file.ignore();
+			file.getline(buffer, 60);
+			this->setTitle(buffer);
+
+			//read date
+			file.ignore();
+			file.getline(buffer, 11);
+			this->date = string(buffer);
+
+			//read time
+			file.ignore();
+			file.getline(buffer, 6);
+			this->setTime(buffer);
+
+			file >> this->duration;
+			
+		}
+	}
 
 	//destructor 
 	~Event() {
@@ -295,12 +321,6 @@ public:
 			delete[] this->time;
 			this->time = nullptr;
 		}
-
-		/*if (this->genre != NULL)
-		{
-			delete[] this->genre;
-			this->genre = nullptr;
-		}*/
 	}
 
 };
@@ -376,6 +396,26 @@ public:
 			return "IMAX";
 	}
 
+	void setGenre(string g) {
+		this->genre = g;
+	}
+
+	void setFormat(const string formatString) {
+		if (formatString == "Format2D") {
+			formatType = Format2D;
+		}
+		else if (formatString == "Format3D") {
+			formatType = Format3D;
+		}
+		else if (formatString == "Format4D") {
+			formatType = Format4D;
+		}
+		else if (formatString == "IMAX") {
+			formatType = IMAX;
+		}
+		else throw exception("Wrong type! Enter a valid type! ");
+	}
+
 	Movie()
 	{
 		this->genre = "";
@@ -413,6 +453,22 @@ public:
 		}
 	}
 
+	void readEventData(ifstream& file) {
+		this->Event::readEventData(file);
+
+		//read genre
+		char buffer[30];
+		file.ignore();
+		file.getline(buffer, 30);
+		this->genre = string(buffer);
+
+		//read Format
+		file.ignore();
+		file.getline(buffer, 30);
+		string formatRead = string(buffer);
+		this->setFormat(formatRead);
+	}
+
 	~Movie() {
 
 	}
@@ -425,6 +481,15 @@ class Concert : public Event {
 	string musicGenre;
 
 public:
+
+	void setArtistName(const char* name)
+	{
+		if (this->artistName != NULL)
+			delete[] this-> artistName;
+
+		this->artistName = new char[strlen(name) + 1];
+		strcpy(this->artistName, name);
+	}
 
 	Concert()
 	{
@@ -473,6 +538,21 @@ public:
 		}
 	}
 
+	void readEventData(ifstream& file) {
+		this->Event::readEventData(file);
+
+		//read artistName
+		char buffer[30];
+		file.ignore();
+		file.getline(buffer, 30);
+		this->setArtistName(buffer);
+
+		//read musicGenre
+		file.ignore();
+		file.getline(buffer, 30);
+		this->musicGenre = string(buffer);
+	}
+
 	~Concert() {
 
 		if (this->artistName != NULL)
@@ -490,6 +570,15 @@ class StandUpShow : public Event {
 	char * specialGuest;
 
 public:
+
+	void setSpecialGuest(const char* name)
+	{
+		if (this->specialGuest != NULL)
+			delete[] this->specialGuest;
+
+		this->specialGuest = new char[strlen(name) + 1];
+		strcpy(this->specialGuest, name);
+	}
 
 	StandUpShow() {
 		this->no_of_comedians = 0;
@@ -539,6 +628,28 @@ public:
 		for (int i = 0; i < strlen(copy1); ++i) {
 			cout << copy1[i];
 		}
+	}
+
+	void readEventData(ifstream& file) {
+		this->Event::readEventData(file);
+
+		//read no of comedians
+		file >> this->no_of_comedians;
+
+		char buffer[30];
+
+		for (int i = 0; i < this->no_of_comedians; i++)
+		{
+			file.ignore();
+			file.getline(buffer, 30);
+			this->comedians[i] = string(buffer);
+		}
+
+		//read specialGuest
+		file.ignore();
+		file.getline(buffer, 30);
+		this->setSpecialGuest(buffer);
+
 	}
 
 
