@@ -324,6 +324,62 @@ public:
 	friend istream& operator>>(istream& in, EventLocation& eventLocation);
 	friend ostream& operator<<(ostream& out, const EventLocation& eventLocation);
 
+	void readEventData(ifstream& file) {
+		if (!file.is_open())
+		{
+			cout << "***Error! The file can't be opened or is missing.";
+		}
+		else
+		{
+			// Read Location Name
+			char buffer[70];
+			file.ignore();
+			file.getline(buffer, 70);
+			setLocName(buffer);
+
+			// Read Address
+			file.ignore();
+			file.getline(buffer, 100);
+			setAddress(buffer);
+
+			file >> this->no_of_rows;
+
+			if (this->no_of_seats != nullptr) {
+				delete[] this->no_of_seats;
+				this->no_of_seats = nullptr;
+			}
+			no_of_seats = new int[this->no_of_rows];
+			for (int i = 0; i < this->no_of_rows; i++) {
+				file >> this->no_of_seats[i];
+			}
+
+			file >> hasConcessionStand;
+
+			// Initialize Seat matrix
+			initializeMatrix();
+			
+			// Put values in the matrix
+
+			if (this->no_of_rows != 0 && this->no_of_seats != NULL)
+			{
+				for (int i = 0; i < this->rows_for_DisabledPeople; i++)
+					for (int j = 0; j < this->no_of_seats[i]; j++)
+						seatMatrix[i][j] = Seat(0, Category::disability);
+
+				int vipStartRow = this->rows_for_DisabledPeople;
+				int vipEndRow = this->rows_for_DisabledPeople + this->rows_for_VIP;
+				for (int i = vipStartRow; i < vipEndRow; i++)
+					for (int j = 0; j < this->no_of_seats[i]; j++)
+						seatMatrix[i][j] = Seat(0, Category::VIP);
+
+				for (int i = vipEndRow; i < this->no_of_rows; i++)
+					for (int j = 0; j < this->no_of_seats[i]; j++)
+						seatMatrix[i][j] = Seat(0, Category::standard);
+			}
+
+		}
+	}
+
 	//destructor
 	~EventLocation() {
 
