@@ -247,6 +247,11 @@ public:
 				this->no_of_seats[i] = e.no_of_seats[i];
 		}
 
+		this->rows_for_VIP = e.rows_for_VIP;
+		this->rows_for_DisabledPeople = e.rows_for_DisabledPeople;
+
+		this->initializeMatrix();
+
 		this->hasConcessionStand = e.hasConcessionStand;
 	}
 
@@ -333,12 +338,13 @@ public:
 		{
 			// Read Location Name
 			char buffer[70];
-			//file.ignore();
+			file.ignore();
 			file.getline(buffer, 70);
+			//cout << "Location read succesfully: " << buffer << endl;
 			setLocName(buffer);
 
 			// Read Address
-			file.ignore();
+			//file.ignore();
 			file.getline(buffer, 100);
 			setAddress(buffer);
 
@@ -353,7 +359,8 @@ public:
 				file >> this->no_of_seats[i];
 			}
 
-			file >> hasConcessionStand;
+			file >> this->rows_for_VIP;
+			file >> this->rows_for_DisabledPeople;
 
 			// Initialize Seat matrix
 			initializeMatrix();
@@ -376,8 +383,28 @@ public:
 					for (int j = 0; j < this->no_of_seats[i]; j++)
 						seatMatrix[i][j] = Seat(0, Category::standard);
 			}
-
+			
+			file >> this->hasConcessionStand;
 		}
+
+	}
+
+	void printInfo() {
+		cout << "Location Name: " << this->locationName << endl;
+		cout << "Address: " << this->address << endl;
+		cout << "Number of rows: " << this->no_of_rows << endl;
+		cout << "Number of seats per row: ";
+		for (int i = 0; i < this->no_of_rows; i++) {
+			cout << this->no_of_seats[i] << " ";
+		}
+		cout << endl << "Number of rows for VIP: " << this->rows_for_VIP;
+		cout << endl << "Number of rows for people with disabilities: " << this->rows_for_DisabledPeople;
+
+		cout << endl << "Concession Stand: ";
+		if (this->hasConcessionStand)
+			cout << "Yes" << endl;
+		else
+			cout << "No" << endl;
 	}
 
 	//destructor
@@ -435,6 +462,11 @@ istream& operator>>(istream& in, EventLocation& location) {
 		in >> location.no_of_seats[i];
 	}
 
+	cout << "Enter Number of rows for VIP: ";
+	in >> location.rows_for_VIP;
+	cout << "Enter Number of rows for people with disabilities: ";
+	in >> location.rows_for_DisabledPeople;
+
 	// Input for concession stand
 	cout << "Does it have a Concession Stand?: ";
 	in >> location.hasConcessionStand;
@@ -444,15 +476,17 @@ istream& operator>>(istream& in, EventLocation& location) {
 
 ostream& operator<<(ostream& out, const EventLocation& location) {
 
-	out << "Location: " << location.locationName << endl;
+	out << "Location Name: " << location.locationName << endl;
 	out << "Address: " << location.address << endl;
 	out << "Number of rows: " << location.no_of_rows << endl;
-	out << "Number of reats per row: ";
+	out << "Number of seats per row: ";
 	for (int i = 0; i < location.no_of_rows; i++) {
 		out << location.no_of_seats[i] << " ";
 	}
-	out << endl;
-	out << "Concession Stand: ";
+	out << endl<< "Number of rows for VIP: "<<location.rows_for_VIP;
+	out << endl << "Number of rows for people with disabilities: " << location.rows_for_DisabledPeople;
+
+	out << endl << "Concession Stand: ";
 	if (location.hasConcessionStand)
 		out << "Yes" << endl;
 	else
