@@ -48,10 +48,10 @@ int main()
 		inputFile1 >> no_of_loc;
 	}
 	EventLocation** locations;
-	locations = new EventLocation* [no_of_loc];
+	locations = new EventLocation* [no_of_loc+1];
 
 	//for (int i = 0; i < no_of_loc; ++i) {
-		//locations[i] = new EventLocation;  // Allocate memory for an EventLocation and make locations[i] point to it
+		//locations[i] = new EventLocation;  // Allocate memory for an EventLocation object and make locations[i] point to it
 	//}
 
 	if (!inputFile1.is_open())
@@ -68,25 +68,38 @@ int main()
 			}
 			else
 			{
-				EventLocation loc;
-				loc.readData(inputFile1);
-				locations[i] = &loc;
-				//cout << locations[i]->getLocName()<<endl;
+				//EventLocation loc;
+				locations[i] = new EventLocation;
+				locations[i]->readData(inputFile1);///
+				//locations[i] = &loc;
+				//cout << locations[0]->getLocName() << endl;
 				//locations[i]->printInfo();
 				cout << endl;
 			}
 		}
 	}
 
-	/*for (int i = 0; i < no_of_loc; i++)
+	for (int i = 0; i < no_of_loc; i++)
 	{
 		cout << "Location " << i + 1 << " Info: " << endl;
 		locations[i]->printInfo();
 		cout << endl;
-	}*/
+	} //first time it didn't work because of the dangling pointer
 
-	//EventLocation loc10;
-	//cin >> loc10;
+
+	/*Movie movie1;
+	if (!inputFile2.is_open())
+	{
+		cout << "***Error! The file can't be opened or is missing.";
+	}
+	else
+	{
+		movie1.readEventData(inputFile2);
+	}
+
+	cout << endl << "Event Info: " << movie1;
+	movie1.printInfo();
+	*/
 
 	/*StandUpShow show1;
 
@@ -100,8 +113,8 @@ int main()
 	}
 
 	cout << endl <<  "Event Info: " << show1;
-	show1.printInfo();*/
-
+	show1.printInfo();
+	*/
 	inputFile1.close();
 	inputFile2.close();
 

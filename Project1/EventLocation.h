@@ -436,14 +436,14 @@ istream& operator>>(istream& in, EventLocation& location) {
 	// Input for Location Name
 	cout << "Enter Location Name: ";
 	char buffer[100];
-	in.ignore(); // Ignore newline left in the buffer
+	//in.ignore(); // Ignore newline left in the buffer
 	in.getline(buffer, 100);
 	location.setLocName(buffer);
 	strcpy(buffer, "");
 
 	// Input for Address
 	cout << "Enter Address: ";
-	in.ignore(); 
+	//in.ignore(); 
 	in.getline(buffer, 100);
 	location.setAddress(buffer);
 
