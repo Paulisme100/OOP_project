@@ -575,6 +575,11 @@ public:
 		this->musicGenre = string(buffer);
 	}
 
+	void printInfo() {
+		cout << "Artist's name: " << this->artistName;
+		cout << "Music genre: " << this->musicGenre;
+	}
+
 	~Concert() {
 
 		if (this->artistName != NULL)
