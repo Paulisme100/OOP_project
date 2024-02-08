@@ -296,18 +296,23 @@ public:
 			char buffer[60];
 			file.getline(buffer, 60);
 			this->setTitle(buffer);
+			//cout <<endl<< "Title read succesfully! " << endl;
 
 			//read date
 			file.ignore();
 			file.getline(buffer, 11);
 			this->date = string(buffer);
+			//cout << "Date read succesfully! " << endl;
 
 			//read time
-			file.ignore();
+			//file.ignore();
 			file.getline(buffer, 6);
+			cout << "Got line: " << buffer;
 			this->setTime(buffer);
+			//cout << "Time read succesfully! " << endl;
 
 			file >> this->duration;
+			//cout << "Duration read succesfully! " << endl;
 			
 		}
 	}
@@ -401,17 +406,18 @@ public:
 
 	
 	void setFormat(const string formatString) {
+		cout << formatString << endl;
 		if (formatString == "Format2D") {
-			formatType = Format2D;
+			this->formatType = Format2D;
 		}
 		else if (formatString == "Format3D") {
-			formatType = Format3D;
+			this->formatType = Format3D;
 		}
 		else if (formatString == "Format4D") {
-			formatType = Format4D;
+			this->formatType = Format4D;
 		}
 		else if (formatString == "IMAX") {
-			formatType = IMAX;
+			this->formatType = IMAX;
 		}
 		else throw exception("Wrong type! Enter a valid type! ");
 	}
@@ -465,10 +471,24 @@ public:
 		this->genre = string(buffer);
 
 		//read Format
-		file.ignore();
+		//file.ignore();
 		file.getline(buffer, 30);
 		string formatRead = string(buffer);
 		this->setFormat(formatRead);
+	}
+
+	void printInfo() {
+
+		cout << "Genre: "<<this->genre << endl;
+		cout << "Format: ";
+		if (this->formatType == Format::Format2D)
+			cout << "Format2D"<<endl;
+		else if (this->formatType == Format::Format3D)
+			cout << "Format3D" << endl;
+		else if (this->formatType == Format::Format4D)
+			cout << "Format4D" << endl;
+		else if (this->formatType == Format::IMAX)
+			cout << "IMAX" << endl;
 	}
 
 	~Movie() {
@@ -637,21 +657,35 @@ public:
 
 		//read no of comedians
 		file >> this->no_of_comedians;
-
+		cout << "No of comedians read = "<< this->no_of_comedians<<endl;
 		char buffer[30];
+
+		this->comedians = new string[this->no_of_comedians];
 
 		for (int i = 0; i < this->no_of_comedians; i++)
 		{
-			file.ignore();
+			if(i == 0)
+				file.ignore();
 			file.getline(buffer, 30);
+			//cout << endl << i<<endl;
 			this->comedians[i] = string(buffer);
+			//cout << "Name: " << this->comedians[i] << endl;
 		}
 
 		//read specialGuest
-		file.ignore();
+		//file.ignore();
 		file.getline(buffer, 30);
 		this->setSpecialGuest(buffer);
 
+	}
+
+	void printInfo() {
+
+		cout << "No. of comedians: " << this->no_of_comedians << endl;
+		for (int i = 0; i < this->no_of_comedians; i++)
+			cout << "Comedian " << i + 1 << ": " << this->comedians[i]<<endl;
+		cout << "Tonight's Special Guest: "<<this->specialGuest;
+		
 	}
 
 
