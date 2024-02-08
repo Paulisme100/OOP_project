@@ -10,7 +10,7 @@ class Ticket {
 	const char* purchaseDate;
 	//int seat_code;
 	int row;
-	int column;
+	int column; 
 	char* buyerName; //or eventType
 	char eventLocation[50];
 	int price;
@@ -162,7 +162,9 @@ public:
 			strcpy(this->buyerName, t.buyerName);
 		}
 
-		strcpy(this->eventLocation, t.eventLocation);
+		this->eventLocation[0] = '\0';
+		if (t.eventLocation != NULL)
+			strcpy(this->eventLocation, t.eventLocation);
 
 		this->price = t.price;
 	}
@@ -170,8 +172,9 @@ public:
 	Ticket& operator=(const Ticket& t)
 	{
 		this->row = t.row;
+		cout << "Row copied";
 		this->column = t.column;
-
+		cout << "Column copied";
 		if (t.buyerName != NULL)
 		{
 			if (this->buyerName != NULL)
@@ -182,8 +185,11 @@ public:
 			this->buyerName = new char[strlen(t.buyerName) + 1];
 			strcpy(this->buyerName, t.buyerName);
 		}
+		cout << "BuyerName copied";
 
-		strcpy(this->eventLocation, t.eventLocation);
+		this->eventLocation[0] = '\0';
+		if(t.eventLocation != NULL)
+			strcpy(this->eventLocation, t.eventLocation);
 
 		if (price <= 0)
 			throw exception("Number is negative or null");
@@ -234,8 +240,14 @@ public:
 	Ticket operator-(int discount)   //smth
 	{
 		Ticket copy = *this;
-		copy.price = copy.price - discount;
-		return copy; 
+		cout << "Ticket copy made!" << endl;
+		if (this->price > discount)
+		{
+			cout << "It's ok. Price is bigger than the discount. " << endl;
+			copy.price = copy.price - discount;
+			cout << "Discount substracted!" << endl;
+		}
+		return copy;
 	}
 	
 	//preincrementation
@@ -300,7 +312,7 @@ ostream& operator<<(ostream& out, const Ticket& ticket) {
 	out << "Purchase Date: " << ticket.purchaseDate;
 	out << "Seat row: " << ticket.row << endl;
 	out << "Seat column: " << ticket.column << endl;
-	out << "Seat Code: " << ticket.row + ticket.column + 1 << endl;
+	out << "Seat Code: " << (ticket.row + ticket.column + 1) << endl;
 	//out << "Seat Code: " << ticket.seat_code << endl;
 	out << "Buyer Name: " << ticket.buyerName << endl;
 	out << "Event Location: " << ticket.eventLocation << endl;
