@@ -86,8 +86,8 @@ int main()
 		cout << endl;
 	} //first time it didn't work because of the dangling pointer
 
-
-	/*Movie movie1;
+	/*
+	Movie movie1;
 	if (!inputFile2.is_open())
 	{
 		cout << "***Error! The file can't be opened or is missing.";
@@ -99,9 +99,23 @@ int main()
 
 	cout << endl << "Event Info: " << movie1;
 	movie1.printInfo();
-	*/
+	
 
-	/*StandUpShow show1;
+	Concert concert1;
+	if (!inputFile2.is_open())
+	{
+		cout << "***Error! The file can't be opened or is missing.";
+	}
+	else
+	{
+		concert1.readEventData(inputFile2);
+	}
+
+	cout << endl << "Event Info: " << concert1;
+	concert1.printInfo();
+
+
+	StandUpShow show1;
 
 	if (!inputFile2.is_open())
 	{
@@ -114,7 +128,71 @@ int main()
 
 	cout << endl <<  "Event Info: " << show1;
 	show1.printInfo();
+
+	Event* events[3];
+	events[0] = &movie1;
+	events[1] = &concert1;
+	events[2] = &show1;
+
+	for (int i = 0; i < 3; i++)
+		events[i]->showUppercase(), cout<<endl;
 	*/
+
+	int no_of_events;
+	if (!inputFile2.is_open())
+	{
+		cout << "***Error! The file can't be opened or is missing.";
+	}
+	else
+	{
+		inputFile2 >> no_of_events;
+	}
+	Event** events;
+	events = new Event * [no_of_events+1];
+	
+	if (!inputFile2.is_open())
+	{
+		cout << "***Error! The file can't be opened or is missing.";
+	}
+	else
+	{
+		for (int i = 0; i < no_of_events; i++)
+		{
+			if (!inputFile2.is_open())
+			{
+				cout << "***Error! The file can't be opened or is missing.";
+			}
+			else
+			{
+				int eventType;
+				inputFile2 >> eventType;
+				cout << "EventType read: " << eventType<<endl;
+				if (eventType == 1)
+				{
+					events[i] = new Movie;
+					events[i]->readEventData(inputFile2);
+				}
+				else if (eventType == 2)
+				{
+					events[i] = new Concert;
+					events[i]->readEventData(inputFile2);
+				}
+				else if (eventType == 3)
+				{
+					events[i] = new StandUpShow;
+					events[i]->readEventData(inputFile2);
+				}
+				
+			}
+		}
+	}
+
+	for (int i = 0; i < no_of_events; i++)
+	{
+		events[i]->showUppercase();
+		cout << endl;
+	}
+
 	inputFile1.close();
 	inputFile2.close();
 

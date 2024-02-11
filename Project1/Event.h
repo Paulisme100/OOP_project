@@ -115,6 +115,7 @@ public:
 				copy[i] = copy[i] - 'a' + 'A';
 			}
 		}
+		cout << endl;
 		for (int i = 0; i < strlen(copy); ++i) {
 			cout << copy[i];
 		}
@@ -178,13 +179,6 @@ public:
 
 		this->duration = m.duration;
 
-		/*if (m.genre != NULL)
-		{
-			this->genre = new char[strlen(m.genre) + 1];
-			strcpy(this->genre, m.genre);
-		}*/
-
-		//this->format = m.format;
 	}
 
 	//overloading operator =
@@ -210,18 +204,6 @@ public:
 
 		this->duration = m.duration;
 
-		/*if (m.genre != NULL)
-		{
-			if (this->genre != NULL)
-			{
-				delete[] this->genre;
-				this->genre = nullptr;
-			}
-			this->genre = new char[strlen(m.genre) + 1];
-			strcpy(this->genre, m.genre);
-		}*/
-
-		//this->format = m.format;
 		return *this;
 	}
 
@@ -294,25 +276,27 @@ public:
 		{
 			//read title
 			char buffer[60];
+			file.ignore();
 			file.getline(buffer, 60);
 			this->setTitle(buffer);
-			//cout <<endl<< "Title read succesfully! " << endl;
+			//cout <<endl<< "Title read succesfully! : ";
+			//cout << this->getTitle()<<endl;
 
 			//read date
 			file.ignore();
 			file.getline(buffer, 11);
 			this->date = string(buffer);
-			//cout << "Date read succesfully! " << endl;
+			//cout << "Date read succesfully! " << this->date<< endl;
 
 			//read time
 			//file.ignore();
 			file.getline(buffer, 6);
-			cout << "Got line: " << buffer;
+			//cout << "Got line: " << buffer<<endl;
 			this->setTime(buffer);
-			//cout << "Time read succesfully! " << endl;
+			//cout << "Time read succesfully! " << this->getTime()<<endl;
 
 			file >> this->duration;
-			//cout << "Duration read succesfully! " << endl;
+			//cout << "Duration read succesfully! " << this->duration<< endl;
 			
 		}
 	}
@@ -348,16 +332,6 @@ istream& operator>>(istream& in, Event& event) {
 	cout << "Enter Duration (in minutes): ";
 	in >> event.duration;
 
-	/*
-	// Input for genre
-	cout << "Enter Genre: ";
-	in.ignore(); // Ignore newline left in the buffer
-	in.getline(buffer, 100);
-	movie.setGenre(buffer);
-	*/
-	/*cout << "Enter Format: ";
-	in >> movie.format;
-	*/
 	return in;
 }
 
@@ -367,8 +341,6 @@ ostream& operator<<(ostream& out, const Event& event) {
 	out << "Date: " << event.date << endl;
 	out << "Time: " << event.time << endl;
 	out << "Duration: " << event.duration << " minutes" << endl;
-	//out << "Genre: " << movie.genre << endl;
-	//out << "Format: " << movie.format << endl;
 
 	return out;
 }
@@ -406,7 +378,7 @@ public:
 
 	
 	void setFormat(const string formatString) {
-		cout << formatString << endl;
+		//cout << formatString << endl;
 		if (formatString == "Format2D") {
 			this->formatType = Format2D;
 		}
@@ -570,14 +542,14 @@ public:
 		this->setArtistName(buffer);
 
 		//read musicGenre
-		file.ignore();
+		//file.ignore();
 		file.getline(buffer, 30);
 		this->musicGenre = string(buffer);
 	}
 
 	void printInfo() {
-		cout << "Artist's name: " << this->artistName;
-		cout << "Music genre: " << this->musicGenre;
+		cout << "Artist's name: " << this->artistName <<endl;
+		cout << "Music genre: " << this->musicGenre << endl;
 	}
 
 	~Concert() {
@@ -662,7 +634,7 @@ public:
 
 		//read no of comedians
 		file >> this->no_of_comedians;
-		cout << "No of comedians read = "<< this->no_of_comedians<<endl;
+		//cout << "No of comedians read = "<< this->no_of_comedians<<endl;
 		char buffer[30];
 
 		this->comedians = new string[this->no_of_comedians];
