@@ -1,6 +1,6 @@
-2
+3
 Afi Palace Cotroceni
-Bulevardul General Paul Teodorescu 4
+Bulevardul General Paul Teodorescu 4, Bucuresti
 20
 20 
 25 
@@ -26,7 +26,7 @@ Bulevardul General Paul Teodorescu 4
 1
 1
 Hard Rock Cafe Bucharest
-Soseaua Pavel D. Kiseleff 32
+Soseaua Pavel D. Kiseleff 32, Bucuresti
 25
 20 
 25 
@@ -56,3 +56,39 @@ Soseaua Pavel D. Kiseleff 32
 3
 2
 1
+Sala Palatului
+Strada Ion Câmpineanu 28, Bucuresti
+30
+32 
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+32
+33
+4
+2
+0
