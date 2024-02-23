@@ -10,6 +10,7 @@ protected:
 	string date;
 	char* time;
 	int duration;
+	char eventLocation[50];
 
 public:
 	//accessors
@@ -18,6 +19,15 @@ public:
 		{
 			char* copy = new char[strlen(this->title) + 1];
 			strcpy(copy, this->title);
+			return copy;
+		}
+	}
+
+	char* getEventLocation() {
+		if (this->eventLocation != NULL)
+		{
+			char* copy = new char[strlen(this->eventLocation) + 1];
+			strcpy(copy, this->eventLocation);
 			return copy;
 		}
 	}
@@ -44,6 +54,13 @@ public:
 
 		strcpy(this->title, title);
 	}
+
+	//set eventLocation
+	void setEventLocation(const char eventLocation[]) {
+
+		strcpy(this->eventLocation, eventLocation);
+	}
+
 
 	bool validateDate(const string date) {
 
@@ -133,7 +150,7 @@ public:
 	}
 
 	//constructor with parameters
-	Event(const char title[], string date, const char* time, int duration)
+	Event(const char title[], string date, const char* time, int duration, const char eventLocation[])
 	{
 		strcpy(this->title, title);
 
@@ -179,6 +196,12 @@ public:
 
 		this->duration = m.duration;
 
+		if (m.eventLocation != NULL)
+		{
+			strcpy(this->eventLocation, m.eventLocation);
+
+		}
+
 	}
 
 	//overloading operator =
@@ -203,6 +226,12 @@ public:
 		}
 
 		this->duration = m.duration;
+
+		if (m.eventLocation != NULL)
+		{
+			strcpy(this->eventLocation, m.eventLocation);
+
+		}
 
 		return *this;
 	}
@@ -297,6 +326,11 @@ public:
 
 			file >> this->duration;
 			//cout << "Duration read succesfully! " << this->duration<< endl;
+
+			//read eventLocation
+			file.ignore();
+			file.getline(buffer, 60);
+			this->setEventLocation(buffer);
 			
 		}
 	}
@@ -332,6 +366,10 @@ istream& operator>>(istream& in, Event& event) {
 	cout << "Enter Duration (in minutes): ";
 	in >> event.duration;
 
+	cout << endl << "Enter the location name: ";
+	in.getline(buffer, 100);
+	event.setEventLocation(buffer);
+
 	return in;
 }
 
@@ -341,6 +379,7 @@ ostream& operator<<(ostream& out, const Event& event) {
 	out << "Date: " << event.date << endl;
 	out << "Time: " << event.time << endl;
 	out << "Duration: " << event.duration << " minutes" << endl;
+	out << "EventLocation: " << event.eventLocation << endl;
 
 	return out;
 }
@@ -402,7 +441,7 @@ public:
 		this->formatType = Format2D;
 	}
 
-	Movie(const char title[], string date, const char* time, int duration, string genre, Format formatType) :Event(title, date, time, duration)
+	Movie(const char title[], string date, const char* time, int duration, const char eventLocation[], string genre, Format formatType) :Event(title, date, time, duration, eventLocation)
 	{
 		this->genre = genre;
 		this->formatType = formatType;
@@ -438,7 +477,7 @@ public:
 
 		//read genre
 		char buffer[30];
-		file.ignore();
+		//file.ignore();
 		file.getline(buffer, 30);
 		this->genre = string(buffer);
 
@@ -491,7 +530,7 @@ public:
 		this->musicGenre = "";
 	}
 
-	Concert(const char title[], string date, const char* time, int duration, const char* artistName, string musicGenre) :Event(title, date, time, duration)
+	Concert(const char title[], string date, const char* time, int duration, const char* artistName, const char eventLocation[], string musicGenre) :Event(title, date, time, duration, eventLocation)
 	{
 		this->artistName = new char[strlen(artistName) + 1];
 		strcpy(this->artistName, artistName);
@@ -537,7 +576,7 @@ public:
 
 		//read artistName
 		char buffer[30];
-		file.ignore();
+		//file.ignore();
 		file.getline(buffer, 30);
 		this->setArtistName(buffer);
 
@@ -585,7 +624,7 @@ public:
 		this->specialGuest = NULL;
 	}
 
-	StandUpShow(const char title[], string date, const char* time, int duration, int no_of_comedians, const string* comedians, const char * specialGuest):Event(title, date, time, duration) {
+	StandUpShow(const char title[], string date, const char* time, int duration, int no_of_comedians, const char eventLocation[], const string* comedians, const char * specialGuest):Event(title, date, time, duration, eventLocation) {
 
 		this->no_of_comedians = no_of_comedians;
 

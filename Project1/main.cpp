@@ -15,26 +15,6 @@ int main()
 	//cout << "Enter file name (with extension): ";
 	//cin.getline(fileName, 50);
 
-	/*switch () {
-	case 0:
-	{
-
-	}
-	break;
-	case 1:
-	{
-		// code block
-	}
-	break;
-	case 2:
-	{
-		// code block
-	}
-	break;
-	default:
-
-	}*/
-
 	ifstream inputFile1("Locations.txt", ios::in);
 	ifstream inputFile2("Events.txt", ios::in);
 
@@ -87,45 +67,6 @@ int main()
 	} //first time it didn't work because of the dangling pointer
 
 	/*
-	Movie movie1;
-	if (!inputFile2.is_open())
-	{
-		cout << "***Error! The file can't be opened or is missing.";
-	}
-	else
-	{
-		movie1.readEventData(inputFile2);
-	}
-
-	cout << endl << "Event Info: " << movie1;
-	movie1.printInfo();
-	
-
-	Concert concert1;
-	if (!inputFile2.is_open())
-	{
-		cout << "***Error! The file can't be opened or is missing.";
-	}
-	else
-	{
-		concert1.readEventData(inputFile2);
-	}
-
-	cout << endl << "Event Info: " << concert1;
-	concert1.printInfo();
-
-
-	StandUpShow show1;
-
-	if (!inputFile2.is_open())
-	{
-		cout << "***Error! The file can't be opened or is missing.";
-	}
-	else
-	{
-		show1.readEventData(inputFile2);
-	}
-
 	cout << endl <<  "Event Info: " << show1;
 	show1.printInfo();
 
@@ -192,6 +133,39 @@ int main()
 		events[i]->showUppercase();
 		cout << endl;
 	}
+
+	cout << "Hello, dear client! \nSelect one of the options below:\n";
+	cout << "1. See the list of events available\n";
+	cout << "0. Exit\n";
+	int option1;
+	cin >> option1;
+	switch (option1) {
+	case 0:
+	{
+		exit(0);
+	}
+	break;
+	case 1:
+	{
+		cout << "Here are the events: ";
+
+		int option2;
+		//cin >> option2;
+
+	}
+	break;
+	//default:
+
+	}
+
+	for (int i = 0; i < no_of_loc; i++)
+		delete locations[i];
+	delete[] locations;
+
+
+	for (int i = 0; i < no_of_events; i++)
+		delete events[i];
+	delete[] events;
 
 	inputFile1.close();
 	inputFile2.close();
