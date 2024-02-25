@@ -11,6 +11,11 @@ protected:
 	char* time;
 	int duration;
 	char eventLocation[50];
+	int basicPrice;
+	int VIPprice;
+	int specialPrice;
+
+	//const static int max_no_of_tickets;
 
 public:
 	//accessors
@@ -47,6 +52,18 @@ public:
 
 	int getDuration() {
 		return this->duration;
+	}
+
+	int getBasicPrice() {
+		return this->basicPrice;
+	}
+
+	int getVIPprice() {
+		return this->VIPprice;
+	}
+
+	int getSpecialPrice() {
+		return this->specialPrice;
 	}
 
 	//setters
@@ -121,6 +138,31 @@ public:
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
 	}
 
+	void setBasicPrice(int newPrice)
+	{
+		if (newPrice < 0)
+			throw exception("Number is negative");
+		else
+			this->basicPrice = newPrice;
+	}
+
+	void setVIPprice(int newPrice)
+	{
+		if (newPrice < 0)
+			throw exception("Number is negative");
+		else
+			this->VIPprice = newPrice;
+	}
+
+	void setSpecialPrice(int newPrice)
+	{
+		if (newPrice < 0)
+			throw exception("Number is negative");
+		else
+			this->specialPrice = newPrice;
+	}
+
+
 	//generic method to show the title in Uppercase
 	virtual void showUppercase() {
 
@@ -145,12 +187,14 @@ public:
 		this->date = "";
 		this->time = NULL;
 		this->duration = 0;
-		//this->genre = NULL;
-		//this->format = "";
+		strcpy(this->eventLocation, "");
+		this->basicPrice = 0;
+		this->VIPprice = 0;
+		this->specialPrice = 0;
 	}
 
 	//constructor with parameters
-	Event(const char title[], string date, const char* time, int duration, const char eventLocation[])
+	Event(const char title[], string date, const char* time, int duration, const char eventLocation[], int basicPrice, int VIPprice, int specialPrice)
 	{
 		strcpy(this->title, title);
 
@@ -174,6 +218,24 @@ public:
 			this->duration = duration;
 		else
 			throw exception("The number of minutes should be greater than 0 and smaller than 300. ");
+
+		strcpy(this->eventLocation, eventLocation);
+
+		//prices for each type
+		if (basicPrice < 0)
+			throw exception("Number is negative");
+		else
+			this->basicPrice = basicPrice;
+
+		if (VIPprice < 0)
+			throw exception("Number is negative");
+		else
+			this->VIPprice = VIPprice;
+
+		if (specialPrice < 0)
+			throw exception("Number is negative");
+		else
+			this->specialPrice = specialPrice;
 
 	}
 
@@ -202,6 +264,9 @@ public:
 
 		}
 
+		this->basicPrice = m.basicPrice;
+		this->VIPprice = m.VIPprice;
+		this->specialPrice = m.specialPrice;
 	}
 
 	//overloading operator =
@@ -232,6 +297,10 @@ public:
 			strcpy(this->eventLocation, m.eventLocation);
 
 		}
+
+		this->basicPrice = m.basicPrice;
+		this->VIPprice = m.VIPprice;
+		this->specialPrice = m.specialPrice;
 
 		return *this;
 	}
@@ -331,7 +400,10 @@ public:
 			file.ignore();
 			file.getline(buffer, 60);
 			this->setEventLocation(buffer);
-			
+
+			file >> this->basicPrice;
+			file >> this->VIPprice;
+			file >> this->specialPrice;
 		}
 	}
 
@@ -366,20 +438,31 @@ istream& operator>>(istream& in, Event& event) {
 	cout << "Enter Duration (in minutes): ";
 	in >> event.duration;
 
-	cout << endl << "Enter the location name: ";
+	cout << endl << "Enter Location Name: ";
 	in.getline(buffer, 100);
 	event.setEventLocation(buffer);
+
+	cout << "Enter Standard Ticket Price: ";
+	in >> event.basicPrice;
+	cout << "Enter VIP Ticket Price: ";
+	in >> event.VIPprice;
+	cout << "Enter Special Ticket Price: ";
+	in >> event.specialPrice;
 
 	return in;
 }
 
 ostream& operator<<(ostream& out, const Event& event) {
-	out << endl;
+	//out << endl;
 	out << "Title: " << event.title << endl;
 	out << "Date: " << event.date << endl;
 	out << "Time: " << event.time << endl;
 	out << "Duration: " << event.duration << " minutes" << endl;
 	out << "EventLocation: " << event.eventLocation << endl;
+
+	out << "Standard Ticket Price: " << event.basicPrice << endl;
+	out << "VIP Ticket Price: " << event.VIPprice << endl;
+	out << "Special Ticket Price: " << event.specialPrice << endl;
 
 	return out;
 }
@@ -441,7 +524,7 @@ public:
 		this->formatType = Format2D;
 	}
 
-	Movie(const char title[], string date, const char* time, int duration, const char eventLocation[], string genre, Format formatType) :Event(title, date, time, duration, eventLocation)
+	Movie(const char title[], string date, const char* time, int duration, const char eventLocation[], int basicPrice, int VIPprice, int SpecialPrice, string genre, Format formatType) :Event(title, date, time, duration, eventLocation, basicPrice, VIPprice, specialPrice)
 	{
 		this->genre = genre;
 		this->formatType = formatType;
@@ -530,7 +613,7 @@ public:
 		this->musicGenre = "";
 	}
 
-	Concert(const char title[], string date, const char* time, int duration, const char* artistName, const char eventLocation[], string musicGenre) :Event(title, date, time, duration, eventLocation)
+	Concert(const char title[], string date, const char* time, int duration, const char eventLocation[], int basicPrice, int VIPprice, int SpecialPrice, const char* artistName, string musicGenre) :Event(title, date, time, duration, eventLocation, basicPrice, VIPprice, specialPrice)
 	{
 		this->artistName = new char[strlen(artistName) + 1];
 		strcpy(this->artistName, artistName);
@@ -624,7 +707,7 @@ public:
 		this->specialGuest = NULL;
 	}
 
-	StandUpShow(const char title[], string date, const char* time, int duration, int no_of_comedians, const char eventLocation[], const string* comedians, const char * specialGuest):Event(title, date, time, duration, eventLocation) {
+	StandUpShow(const char title[], string date, const char* time, int duration, const char eventLocation[], int basicPrice, int VIPprice, int SpecialPrice, int no_of_comedians, const string* comedians, const char * specialGuest):Event(title, date, time, duration, eventLocation, basicPrice, VIPprice, specialPrice) {
 
 		this->no_of_comedians = no_of_comedians;
 
