@@ -105,6 +105,11 @@ public:
 
 	}
 
+	void reserveSeat(int row, int column)
+	{
+		seatMatrix[row-1][column-1].setAvailability(0);
+	}
+
 	//first generic method; it calculates the total number of seats
 	int max_no_of_seats() {
 		int totalSeats = 0;
@@ -163,17 +168,17 @@ public:
 		{
 			for (int i = 0; i < this->rows_for_DisabledPeople; i++)
 				for (int j = 0; j < this->no_of_seats[i]; j++)
-					seatMatrix[i][j] = Seat(0, Category::disability);
+					seatMatrix[i][j] = Seat(1, Category::disability);
 
 			int vipStartRow = this->rows_for_DisabledPeople;
 			int vipEndRow = this->rows_for_DisabledPeople + this->rows_for_VIP;
 			for(int i = vipStartRow; i < vipEndRow; i++)
 				for (int j = 0; j < this->no_of_seats[i]; j++)
-					seatMatrix[i][j] = Seat(0, Category::VIP);
+					seatMatrix[i][j] = Seat(1, Category::VIP);
 			
 			for (int i = vipEndRow; i < this->no_of_rows; i++)
 				for (int j = 0; j < this->no_of_seats[i]; j++)
-					seatMatrix[i][j] = Seat(0, Category::standard);
+					seatMatrix[i][j] = Seat(1, Category::standard);
 		}
 
 	}
@@ -186,7 +191,7 @@ public:
 			return;
 		}
 
-		cout << "Seat Availability Matrix:" << endl;
+		cout << "Seat Availability Matrix (1 means available and 0 means unavailable):" << endl;
 
 		for (int i = 0; i < this->no_of_rows; i++)
 		{
@@ -207,7 +212,7 @@ public:
 			return;
 		}
 
-		cout << "Seat Category Matrix:" << endl;
+		cout << "Seat Category Matrix (0 is standard, 1 is VIP, 2 is Disability):" << endl;
 
 		for (int i = 0; i < this->no_of_rows; i++)
 		{
@@ -371,17 +376,17 @@ public:
 			{
 				for (int i = 0; i < this->rows_for_DisabledPeople; i++)
 					for (int j = 0; j < this->no_of_seats[i]; j++)
-						seatMatrix[i][j] = Seat(0, Category::disability);
+						seatMatrix[i][j] = Seat(1, Category::disability);
 
 				int vipStartRow = this->rows_for_DisabledPeople;
 				int vipEndRow = this->rows_for_DisabledPeople + this->rows_for_VIP;
 				for (int i = vipStartRow; i < vipEndRow; i++)
 					for (int j = 0; j < this->no_of_seats[i]; j++)
-						seatMatrix[i][j] = Seat(0, Category::VIP);
+						seatMatrix[i][j] = Seat(1, Category::VIP);
 
 				for (int i = vipEndRow; i < this->no_of_rows; i++)
 					for (int j = 0; j < this->no_of_seats[i]; j++)
-						seatMatrix[i][j] = Seat(0, Category::standard);
+						seatMatrix[i][j] = Seat(1, Category::standard);
 			}
 			
 			file >> this->hasConcessionStand;

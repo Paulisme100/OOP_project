@@ -15,7 +15,7 @@ public:
 	Seat()
 	{
 		//this->seat_code = 0;
-		this->availability = 0;
+		this->availability = 1;
 		this->category = Category::standard;
 	}
 
