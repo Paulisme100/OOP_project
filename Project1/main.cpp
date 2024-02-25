@@ -54,17 +54,17 @@ int main()
 				//locations[i] = &loc;
 				//cout << locations[0]->getLocName() << endl;
 				//locations[i]->printInfo();
-				cout << endl;
 			}
 		}
 	}
 
-	for (int i = 0; i < no_of_loc; i++)
+	/*for (int i = 0; i < no_of_loc; i++)
 	{
 		cout << "Location " << i + 1 << " Info: " << endl;
 		locations[i]->printInfo();
 		cout << endl;
 	} //first time it didn't work because of the dangling pointer
+	*/
 
 	/*
 	cout << endl <<  "Event Info: " << show1;
@@ -107,7 +107,6 @@ int main()
 			{
 				int eventType;
 				inputFile2 >> eventType;
-				cout << "EventType read: " << eventType<<endl;
 				if (eventType == 1)
 				{
 					events[i] = new Movie;
@@ -128,11 +127,15 @@ int main()
 		}
 	}
 
-	for (int i = 0; i < no_of_events; i++)
+	/*for (int i = 0; i < no_of_events; i++)
 	{
 		events[i]->showUppercase();
 		cout << endl;
-	}
+	}*/
+
+	Ticket* tickets[100];
+	int cnt = 0;
+
 
 	cout << "Hello, dear client! \nSelect one of the options below:\n";
 	cout << "1. See the list of events available\n";
@@ -142,19 +145,80 @@ int main()
 	switch (option1) {
 	case 0:
 	{
-		exit(0);
+		return 0;
 	}
 	break;
 	case 1:
 	{
-		cout << "Here are the events: ";
+		cout << "Here are the events: \n";
+		for (int i = 0; i < no_of_events; i++)
+		{
+			cout << i + 1 << '.' << *events[i];
+			cout << endl;
+		}
+		cout<< "0. Exit\n";
+
+		cout << endl << "Choose one of the options and see the seats available. \n";
 
 		int option2;
-		//cin >> option2;
+		cin >> option2;
+		//clear();
+		if (option2 >= 1 && option2 <= no_of_events)
+		{
+			cout << endl;
+			char locName[50];
+			strcpy(locName, events[option2 - 1]->getEventLocation());
+			
+			int index = 0, i;
+			for (i = 0; i < no_of_loc; i++)
+			{
+				//cout << "i = " << i<<'\n';
+				//cout << locName << " = " << locations[i]->getLocName()<<'\n';
+				//cout << "strcmp result: " << strcmp(locName, locations[i]->getLocName()) << '\n';
+				if (strcmp(locName, locations[i]->getLocName()) == 0)
+				{
+					index = i;
+					break;
+				}
+			}
 
+			cout <<"The event takes place at " << locName << ".\nBelow you can see all the seats.\n\n";
+			locations[index]->printSeatAvailabilityMatrix();
+
+			cout << "\n \n" << "Also take a look at the seat types/categories that can be bought and take this into consideration when choosing a seat.\n\n";
+			locations[index]->printSeatCategoryMatrix();
+
+			/*cout << "\nType 1 if you want to buy a ticket...Then you will choose the seat by typing the number of the row and column you want.";
+			int option3;
+			cin >> option3;
+			if (option3 == 1)
+			{
+				int row, column;
+				cout << "\nInsert row number: ";
+				cin >> row;
+				cout<< "\nInsert column number: ";
+				cin >> column;
+
+				locations[index]->reserveSeat(row, column);
+
+				//locations[index]->printSeatAvailabilityMatrix();
+
+				//buyerName; //or eventType
+				//int price;
+			}
+			else return 0;
+	
+		}
+		else if (option2 == 0)
+			return 0;
+			else
+			{
+			cout << "Invalid option\n";
+			}
+			*/
 	}
 	break;
-	//default:
+	cout << "Invalid option\n";
 
 	}
 
