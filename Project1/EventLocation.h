@@ -225,6 +225,12 @@ public:
 		}
 	}
 
+	int getSeatCategory(int row, int column)
+	{
+		int cat = seatMatrix[row-1][column-1].getCategory();
+		return cat;
+	}
+
 	//copy construct
 	EventLocation(const EventLocation& e)
 	{
