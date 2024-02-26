@@ -401,10 +401,23 @@ public:
 			file.getline(buffer, 60);
 			this->setEventLocation(buffer);
 
+			//file.ignore();
 			file >> this->basicPrice;
 			file >> this->VIPprice;
 			file >> this->specialPrice;
 		}
+	}
+
+	virtual void printInfo() {
+		cout << "Title: " << this->title << endl;
+		cout << "Date: " << this->date << endl;
+		cout << "Time: " << this->time << endl;
+		cout << "Duration: " << this->duration << " minutes" << endl;
+		cout << "EventLocation: " << this->eventLocation << endl;
+
+		cout << "Standard Ticket Price: " << this->basicPrice << endl;
+		cout << "VIP Ticket Price: " << this->VIPprice << endl;
+		cout << "Special Ticket Price: " << this->specialPrice << endl;
 	}
 
 	//destructor 
@@ -501,6 +514,9 @@ public:
 	
 	void setFormat(const string formatString) {
 		//cout << formatString << endl;
+		if (formatString == "0") {
+			cout << "WRONG 0 NOT OK;";
+		}
 		if (formatString == "Format2D") {
 			this->formatType = Format2D;
 		}
@@ -557,21 +573,25 @@ public:
 
 	void readEventData(ifstream& file) {
 		this->Event::readEventData(file);
-
+		
 		//read genre
 		char buffer[30];
-		//file.ignore();
+		file.ignore();
 		file.getline(buffer, 30);
 		this->genre = string(buffer);
+		//cout << "\nGenre has been read: "<<this->genre<<endl;
 
 		//read Format
 		//file.ignore();
 		file.getline(buffer, 30);
 		string formatRead = string(buffer);
 		this->setFormat(formatRead);
+		//cout << "\nFormat has been read: " << buffer << endl;
 	}
 
 	void printInfo() {
+
+		this->Event::printInfo();
 
 		cout << "Genre: "<<this->genre << endl;
 		cout << "Format: ";
@@ -659,7 +679,7 @@ public:
 
 		//read artistName
 		char buffer[30];
-		//file.ignore();
+		file.ignore();
 		file.getline(buffer, 30);
 		this->setArtistName(buffer);
 
@@ -670,6 +690,9 @@ public:
 	}
 
 	void printInfo() {
+
+		this->Event::printInfo();
+
 		cout << "Artist's name: " << this->artistName <<endl;
 		cout << "Music genre: " << this->musicGenre << endl;
 	}
@@ -779,6 +802,8 @@ public:
 	}
 
 	void printInfo() {
+
+		this->Event::printInfo();
 
 		cout << "No. of comedians: " << this->no_of_comedians << endl;
 		for (int i = 0; i < this->no_of_comedians; i++)
