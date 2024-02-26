@@ -129,14 +129,17 @@ int main()
 
 	/*for (int i = 0; i < no_of_events; i++)
 	{
-		events[i]->showUppercase();
+		//cout<< *events[i]<<endl;
+		//events[i]->showUppercase();
+		events[i]->printInfo();
 		cout << endl;
 	}*/
+	
 
 	Ticket* tickets[100];
 	int cnt = 0;
 
-
+	
 	cout << "Hello, dear client! \nSelect one of the options below:\n";
 	cout << "1. See the list of events available\n";
 	cout << "0. Exit\n";
@@ -188,7 +191,7 @@ int main()
 			cout << "\n \n" << "Also take a look at the seat types/categories that can be bought and take this into consideration when choosing a seat.\n\n";
 			locations[index]->printSeatCategoryMatrix();
 
-			/*cout << "\nType 1 if you want to buy a ticket...Then you will choose the seat by typing the number of the row and column you want.";
+			cout << "\nType 1 if you want to buy a ticket...Then you will choose the seat by typing the number of the row and column you want.";
 			int option3;
 			cin >> option3;
 			if (option3 == 1)
@@ -199,12 +202,53 @@ int main()
 				cout<< "\nInsert column number: ";
 				cin >> column;
 
-				locations[index]->reserveSeat(row, column);
-
 				//locations[index]->printSeatAvailabilityMatrix();
 
-				//buyerName; //or eventType
-				//int price;
+				int isBought;
+				//cout << "\nEnter your name in this format: LastName FirstName. \n";
+				//cin>>buyerName;
+				/*cout << "Continue? ";
+				cin >> isBought;
+				cout << endl << "Enter name: ";
+				cin >> buyerName;*/
+				
+				int ticketPrice = 0;
+				if (locations[index]->getSeatCategory(row, column) == 0)
+				{
+					ticketPrice = events[option2 - 1]->getBasicPrice();
+				}
+				else if (locations[index]->getSeatCategory(row, column) == 1)
+				{
+					ticketPrice = events[option2 - 1]->getVIPprice();
+				}
+				else if (locations[index]->getSeatCategory(row, column) == 2)
+				{
+					ticketPrice = events[option2 - 1]->getSpecialPrice();
+					cout << ticketPrice;
+				}
+
+				
+				cout << "The ticket for the selected seat is: $" << ticketPrice <<endl << "Confirm your place by typing 1...  ";;
+
+				//cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				//cin.ignore();
+				//cout << "Do you want to buy the ticket? \n";
+
+				cin >> isBought;
+				if (isBought == 1)
+				{
+					string buyerName;
+					cout << "Enter your name (FirstName): ";
+					cin>>buyerName;
+					locations[index]->reserveSeat(row, column);
+					cout << "Hi " << buyerName << ". Your seat is reserved! ";
+		
+				}
+				else
+				{
+					cout << "Purchase canceled.";
+				}
+				
 			}
 			else return 0;
 	
@@ -215,7 +259,7 @@ int main()
 			{
 			cout << "Invalid option\n";
 			}
-			*/
+			
 	}
 	break;
 	cout << "Invalid option\n";
