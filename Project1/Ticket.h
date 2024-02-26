@@ -11,7 +11,7 @@ class Ticket {
 	//int seat_code;
 	int row;
 	int column; 
-	char* buyerName; //or eventType
+	char* buyerName; 
 	char eventLocation[50];
 	int price;
 
@@ -97,8 +97,8 @@ public:
 
 	void set_price(int newPrice)
 	{
-		if (newPrice <= 0)
-			throw exception("Number is negative or null");
+		if (newPrice < 0)
+			throw exception("Number is negative! ");
 		else
 			this->price = newPrice;
 	}
