@@ -18,6 +18,9 @@ int main()
 	ifstream inputFile1("Locations.txt", ios::in);
 	ifstream inputFile2("Events.txt", ios::in);
 
+	ofstream outputBFile("Tickets.bin", ios::binary | ios::out | ios::app);
+	ifstream inputBFile("Tickets.bin", ios::binary | ios::in);
+
 	int no_of_loc;
 	if (!inputFile1.is_open())
 	{
@@ -224,7 +227,6 @@ int main()
 				else if (locations[index]->getSeatCategory(row, column) == 2)
 				{
 					ticketPrice = events[option2 - 1]->getSpecialPrice();
-					cout << ticketPrice;
 				}
 
 				
@@ -237,12 +239,23 @@ int main()
 				cin >> isBought;
 				if (isBought == 1)
 				{
-					string buyerName;
+					char buyerName[50];
 					cout << "Enter your name (FirstName): ";
 					cin>>buyerName;
 					locations[index]->reserveSeat(row, column);
-					cout << "Hi " << buyerName << ". Your seat is reserved! ";
-		
+					cout << "Hi " << buyerName << ". Your seat is reserved! "<<endl;
+					tickets[cnt] = new Ticket(row, column, buyerName, locName, ticketPrice);
+					cnt++;
+					cout << "\nTicket printed. Here's the info: " << endl;
+					//cout << *tickets[cnt - 1];
+
+					tickets[cnt - 1]->serialize(outputBFile);
+
+					/*tickets[cnt] = new Ticket;
+					cout << "\n New ticket:\n";
+					tickets[cnt]->deserialize(inputBFile);*/
+					//cout << *tickets[cnt];
+					
 				}
 				else
 				{
@@ -265,6 +278,8 @@ int main()
 	cout << "Invalid option\n";
 
 	}
+
+
 
 	for (int i = 0; i < no_of_loc; i++)
 		delete locations[i];
