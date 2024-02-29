@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string.h>
 #include <chrono>
 
@@ -262,6 +263,71 @@ public:
 		Ticket copy = *this;
 		copy.price++;
 		return copy;          
+	}
+
+	void serialize(ofstream& outputBFile)
+	{
+		if (!outputBFile.is_open())
+		{
+			cout << "Couldn't open or create the output file!";
+		}
+		else {
+
+			outputBFile.write((char*)&this->uid, sizeof(int));
+			int length = strlen(purchaseDate);
+			outputBFile.write((char*) & length, sizeof(int));
+			outputBFile.write((char*) & this->purchaseDate, sizeof(char) * (length + 1));
+			outputBFile.write((char*)&this->row, sizeof(int));
+			outputBFile.write((char*)&this->column, sizeof(int));
+			int clientNameLength = strlen(this->buyerName);
+			outputBFile.write((char*) & clientNameLength, sizeof(int));
+			outputBFile.write((char*)&this->buyerName, sizeof(char) * (clientNameLength + 1));
+			int locNameLength = strlen(this->eventLocation);
+			outputBFile.write((char*) & locNameLength, sizeof(int));
+			outputBFile.write((char*)&this->eventLocation, sizeof(char) * (locNameLength + 1));
+			outputBFile.write((char*)&this->price, sizeof(int));
+		}
+	}
+
+	void deserialize(ifstream& inputBFile)
+	{
+		if (!inputBFile.is_open())
+		{
+			cout << "Couldn't open the file!";
+		}
+		else
+		{
+			int locUid;
+			inputBFile.read((char*)&locUid, sizeof(int));
+			cout << endl<<"Uid: "<<locUid;
+
+			int length = strlen(purchaseDate);
+			inputBFile.read((char*)&length, sizeof(int));
+			cout << endl << "Length: " << length;
+			char* localPurchaseDate = new char[length+1];
+			inputBFile.read((char*)&localPurchaseDate, sizeof(char) * (length + 1));
+			cout << endl << "PurchaseDate: " << localPurchaseDate;
+
+			inputBFile.read((char*)&this->row, sizeof(int));
+			inputBFile.read((char*) & this->column, sizeof(int));
+
+			int clientNameLen;
+			inputBFile.read((char*) & clientNameLen, sizeof(int));
+
+			if (this->buyerName != NULL)
+			{
+				delete[] this->buyerName;
+				this->buyerName = nullptr;
+			}
+			this->buyerName = new char[clientNameLen + 1];
+			inputBFile.read((char*) & this->buyerName, sizeof(char) * (clientNameLen + 1));
+
+			int locNameLen;
+			inputBFile.read((char*) & locNameLen, sizeof(int));
+			inputBFile.read(this->eventLocation, sizeof(char)*(locNameLen + 1));
+
+			inputBFile.read((char*)this->price, sizeof(int));
+		}
 	}
 
 	friend istream& operator>>(istream& in, Ticket& ticket);
