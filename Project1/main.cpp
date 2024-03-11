@@ -17,6 +17,8 @@ int main()
 
 	ifstream inputFile1("Locations.txt", ios::in);
 	ifstream inputFile2("Events.txt", ios::in);
+	fstream idsFile("IDs.txt", ios::in | ios::out | ios::app);
+	fstream availableSeats("AvailableSeats.txt", ios::in | ios::out | ios::app);
 
 	ofstream outputBFile("Tickets.bin", ios::binary | ios::out | ios::app);
 	ifstream inputBFile("Tickets.bin", ios::binary | ios::in);
@@ -139,6 +141,8 @@ int main()
 	}*/
 	
 
+	
+
 	Ticket* tickets[100];
 	int cnt = 0;
 
@@ -208,12 +212,6 @@ int main()
 				//locations[index]->printSeatAvailabilityMatrix();
 
 				int isBought;
-				//cout << "\nEnter your name in this format: LastName FirstName. \n";
-				//cin>>buyerName;
-				/*cout << "Continue? ";
-				cin >> isBought;
-				cout << endl << "Enter name: ";
-				cin >> buyerName;*/
 				
 				int ticketPrice = 0;
 				if (locations[index]->getSeatCategory(row, column) == 0)
@@ -230,7 +228,7 @@ int main()
 				}
 
 				
-				cout << "The ticket for the selected seat is: $" << ticketPrice <<endl << "Confirm your place by typing 1...  ";;
+				cout << "The ticket for the selected seat is: $" << ticketPrice <<endl << "Confirm your place by typing 1...  ";
 
 				//cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				//cin.ignore();
@@ -244,18 +242,22 @@ int main()
 					cin>>buyerName;
 					locations[index]->reserveSeat(row, column);
 					cout << "Hi " << buyerName << ". Your seat is reserved! "<<endl;
+					//const char* charArray = buyerName.c_str();
 					tickets[cnt] = new Ticket(row, column, buyerName, locName, ticketPrice);
+					tickets[cnt]->printIdtoFile(idsFile);
 					cnt++;
 					cout << "\nTicket printed. Here's the info: " << endl;
 					//cout << *tickets[cnt - 1];
 
 					tickets[cnt - 1]->serialize(outputBFile);
 
-					/*tickets[cnt] = new Ticket;
-					cout << "\n New ticket:\n";
-					tickets[cnt]->deserialize(inputBFile);*/
-					//cout << *tickets[cnt];
+					//Ticket copyTicket;
+					//cout << "\n New ticket:\n";
 					
+					//copyTicket.deserialize(inputBFile);
+					//copyTicket.deserialize(inputBFile);
+					//cout << *tickets[cnt];
+					//delete[] charArray;
 				}
 				else
 				{
@@ -279,7 +281,7 @@ int main()
 
 	}
 
-
+	
 
 	for (int i = 0; i < no_of_loc; i++)
 		delete locations[i];
@@ -292,6 +294,9 @@ int main()
 
 	inputFile1.close();
 	inputFile2.close();
+	outputBFile.close();
+	inputBFile.close();
+	idsFile.close();
 
 	/*Ticket tick1(3, 5, "Costi", "Bodega Ursilor", 30);
 	cout << endl << "Ticket Info: ";

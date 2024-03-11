@@ -17,6 +17,7 @@ class Ticket {
 	int price;
 
 public:
+
 	static int ticket_counter;
 	//accessors
 
@@ -71,6 +72,49 @@ public:
 		this->seat_code = code;
 	}*/
 
+	int generateRandomUid()
+	{
+		fstream idsFile("IDs.txt", ios::in | ios::out | ios::app);
+		int ok;
+		srand(static_cast<unsigned int>(time(nullptr)));
+		int random = rand() % 3;
+		if (!idsFile.is_open())
+		{
+			throw exception("Couldn't open the file!");
+		}
+		else
+		{
+			ok = 0;
+			while (ok == 0)
+			{
+				ok = 1;
+				while (!idsFile.eof() && ok == 1)
+				{
+					int ID;
+					idsFile >> ID;
+					//cout << "ID = " << ID << "; random = " << random<<endl;
+					if (ID == random)
+					{
+						ok = 0;
+					}
+
+				}
+				if (ok == 0)
+				{
+					//srand(static_cast<unsigned int>(time(nullptr)));
+					random = rand() % 3;
+					cout << "New random var: "<<random<<endl;
+				}
+			}
+			/*if (ok == 1)
+				cout << "Generated number: " << random;
+			else cout << "No number :/";*/
+			return random;
+		}
+
+		idsFile.close();
+	}
+
 	void setRow(int value)
 	{
 		this->row = value;
@@ -118,7 +162,7 @@ public:
 	}
 
 	//default construct
-	Ticket() :uid(++ticket_counter), purchaseDate(getCurrentTime())
+	Ticket() :uid(this->generateRandomUid()), purchaseDate(getCurrentTime())
 	{
 		//this->seat_code = 0;
 		this->row= 0;
@@ -126,10 +170,11 @@ public:
 		this->buyerName = NULL;
 		strcpy(this->eventLocation, "");
 		this->price = 0;
+		++ticket_counter;
 	}
 
 	//constructor with parameters
-	Ticket(int row, int column, const char* buyerName, const char eventLocation[], int price) :uid(++ticket_counter), purchaseDate(getCurrentTime())
+	Ticket(int row, int column, const char* buyerName, const char eventLocation[], int price) :uid(this->generateRandomUid()), purchaseDate(getCurrentTime())
 	{
 		this->row = row;
 		this->column = column;
@@ -143,10 +188,12 @@ public:
 			throw exception("Number is negative or null");
 		else
 			this->price = price;
+
+		++ticket_counter;
 	}
 
 	//cpy constructor
-	Ticket(const Ticket& t) :uid(++ticket_counter), purchaseDate(getCurrentTime())
+	Ticket(const Ticket& t) :uid(this->generateRandomUid()), purchaseDate(getCurrentTime())
 	{
 		this->row = t.row;
 		this->column = t.column;
@@ -168,6 +215,7 @@ public:
 			strcpy(this->eventLocation, t.eventLocation);
 
 		this->price = t.price;
+		++ticket_counter;
 	}
 
 	Ticket& operator=(const Ticket& t)
@@ -276,12 +324,18 @@ public:
 			outputBFile.write((char*)&this->uid, sizeof(int));
 			int length = strlen(purchaseDate);
 			outputBFile.write((char*) & length, sizeof(int));
-			outputBFile.write((char*) & this->purchaseDate, sizeof(char) * (length + 1));
+			//cout << "\nLength of date: " << length;
+			char date[30] = "";
+			strcpy(date, this->purchaseDate);
+			outputBFile.write((char*)&date, sizeof(char) * (length + 1));
+			//cout << "\nPurchase date: " << this->purchaseDate;
 			outputBFile.write((char*)&this->row, sizeof(int));
 			outputBFile.write((char*)&this->column, sizeof(int));
 			int clientNameLength = strlen(this->buyerName);
 			outputBFile.write((char*) & clientNameLength, sizeof(int));
-			outputBFile.write((char*)&this->buyerName, sizeof(char) * (clientNameLength + 1));
+			char clientN[50] = "";
+			strcpy(clientN, this->buyerName);
+			outputBFile.write((char*)&clientN, sizeof(char) * (clientNameLength + 1));
 			int locNameLength = strlen(this->eventLocation);
 			outputBFile.write((char*) & locNameLength, sizeof(int));
 			outputBFile.write((char*)&this->eventLocation, sizeof(char) * (locNameLength + 1));
@@ -299,34 +353,55 @@ public:
 		{
 			int locUid;
 			inputBFile.read((char*)&locUid, sizeof(int));
-			cout << endl<<"Uid: "<<locUid;
+			cout << endl << "Uid: " << locUid;
 
-			int length = strlen(purchaseDate);
+			int length;
 			inputBFile.read((char*)&length, sizeof(int));
 			cout << endl << "Length: " << length;
-			char* localPurchaseDate = new char[length+1];
+			//char* localPurchaseDate = new char[length + 1];
+			char localPurchaseDate[30];
 			inputBFile.read((char*)&localPurchaseDate, sizeof(char) * (length + 1));
 			cout << endl << "PurchaseDate: " << localPurchaseDate;
 
-			inputBFile.read((char*)&this->row, sizeof(int));
-			inputBFile.read((char*) & this->column, sizeof(int));
+			int row;
+			int column;
+			inputBFile.read((char*)&row, sizeof(int));
+			inputBFile.read((char*) &column, sizeof(int));
+			cout << "\nRow: "<<row;
+			cout << "Column: " <<column;
 
 			int clientNameLen;
 			inputBFile.read((char*) & clientNameLen, sizeof(int));
+			cout << "\nName length: " << clientNameLen;
 
-			if (this->buyerName != NULL)
+			/*if (this->buyerName != NULL)
 			{
 				delete[] this->buyerName;
 				this->buyerName = nullptr;
-			}
-			this->buyerName = new char[clientNameLen + 1];
-			inputBFile.read((char*) & this->buyerName, sizeof(char) * (clientNameLen + 1));
+			}*/
+			char clientN[50] = "";
+			//this->buyerName = new char[clientNameLen + 1];
+			inputBFile.read((char*) & clientN, sizeof(char) * (clientNameLen + 1));
+			cout << "\nclientName: " << clientN;
 
 			int locNameLen;
 			inputBFile.read((char*) & locNameLen, sizeof(int));
-			inputBFile.read(this->eventLocation, sizeof(char)*(locNameLen + 1));
+			cout << "\n Length of locName: " << locNameLen;
+			char nameOfLoc[60];
+			inputBFile.read((char*) & nameOfLoc, sizeof(char) * (locNameLen + 1));
+			cout << "\n location: " << nameOfLoc;
 
-			inputBFile.read((char*)this->price, sizeof(int));
+			int pprice;
+			inputBFile.read((char*)&pprice, sizeof(int));
+			cout << "\nPrice: " << pprice;
+		}
+	}
+
+	void printIdtoFile(fstream& outputFile)
+	{
+		if (this->uid > 0)
+		{
+			outputFile << this->uid<<endl;
 		}
 	}
 

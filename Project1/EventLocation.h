@@ -183,6 +183,15 @@ public:
 
 	}
 
+	void setSeatAvailabilityMatrix(fstream input) {
+		char locName[50];
+		input >> locName;
+		char locName1[50];
+		strcpy(locName1, locName);
+
+		//strcmp()
+	}
+
 	void printSeatAvailabilityMatrix()
 	{
 		if (this->no_of_rows == 0 || this->no_of_seats == nullptr || this->seatMatrix == nullptr)
@@ -229,6 +238,10 @@ public:
 	{
 		int cat = seatMatrix[row-1][column-1].getCategory();
 		return cat;
+	}
+
+	void setSeatAvailability(int row, int column) {
+		this->seatMatrix[row - 1][column - 1].setAvailability(0);
 	}
 
 	//copy construct
