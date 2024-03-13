@@ -77,7 +77,7 @@ public:
 		fstream idsFile("IDs.txt", ios::in | ios::out | ios::app);
 		int ok;
 		srand(static_cast<unsigned int>(time(nullptr)));
-		int random = rand() % 3;
+		int random = rand();
 		if (!idsFile.is_open())
 		{
 			throw exception("Couldn't open the file!");
@@ -102,7 +102,7 @@ public:
 				if (ok == 0)
 				{
 					//srand(static_cast<unsigned int>(time(nullptr)));
-					random = rand() % 3;
+					random = rand();
 					cout << "New random var: "<<random<<endl;
 				}
 			}

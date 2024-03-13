@@ -11,14 +11,10 @@ using namespace std;
 
 int main()
 {
-	//char fileName[50];
-	//cout << "Enter file name (with extension): ";
-	//cin.getline(fileName, 50);
-
 	ifstream inputFile1("Locations.txt", ios::in);
 	ifstream inputFile2("Events.txt", ios::in);
 	fstream idsFile("IDs.txt", ios::in | ios::out | ios::app);
-	fstream availableSeats("AvailableSeats.txt", ios::in | ios::out | ios::app);
+	fstream availableSeats("Available Seats.txt", ios::in | ios::out);
 
 	ofstream outputBFile("Tickets.bin", ios::binary | ios::out | ios::app);
 	ifstream inputBFile("Tickets.bin", ios::binary | ios::in);
@@ -35,9 +31,6 @@ int main()
 	EventLocation** locations;
 	locations = new EventLocation* [no_of_loc+1];
 
-	//for (int i = 0; i < no_of_loc; ++i) {
-		//locations[i] = new EventLocation;  // Allocate memory for an EventLocation object and make locations[i] point to it
-	//}
 
 	if (!inputFile1.is_open())
 	{
@@ -53,37 +46,15 @@ int main()
 			}
 			else
 			{
-				//EventLocation loc;
-				locations[i] = new EventLocation;
-				locations[i]->readData(inputFile1);///
-				//locations[i] = &loc;
-				//cout << locations[0]->getLocName() << endl;
-				//locations[i]->printInfo();
+				locations[i] = new EventLocation; // Allocate memory for an EventLocation object and make locations[i] point to it
+				locations[i]->readData(inputFile1);
 			}
 		}
 	}
 
-	/*for (int i = 0; i < no_of_loc; i++)
-	{
-		cout << "Location " << i + 1 << " Info: " << endl;
-		locations[i]->printInfo();
-		cout << endl;
-	} //first time it didn't work because of the dangling pointer
-	*/
-
-	/*
-	cout << endl <<  "Event Info: " << show1;
-	show1.printInfo();
-
-	Event* events[3];
-	events[0] = &movie1;
-	events[1] = &concert1;
-	events[2] = &show1;
-
-	for (int i = 0; i < 3; i++)
-		events[i]->showUppercase(), cout<<endl;
-	*/
-
+	//for (int i = 0; i < no_of_loc; i++)
+		//locations[i]->writeAvailabilityMatrixToFile(availableSeats);
+		
 	int no_of_events;
 	if (!inputFile2.is_open())
 	{
@@ -131,7 +102,6 @@ int main()
 			}
 		}
 	}
-
 	/*for (int i = 0; i < no_of_events; i++)
 	{
 		//cout<< *events[i]<<endl;
@@ -140,8 +110,52 @@ int main()
 		cout << endl;
 	}*/
 	
+	if (!availableSeats.is_open())
+	{
+		cout << "***Error! The file can't be opened or is missing.";
+	}
+	else {
+		for (int i = 0; i < no_of_loc; i++)
+		{
+			if (i > 0)
+			{
+				availableSeats.ignore();
+				availableSeats.ignore();
+			}
+			char locationName[50];
+			availableSeats.getline(locationName, 60);
+			int index = 0; 
+			//cout << "locationName: " << locationName << endl;
+			for (int j = 0; j < no_of_loc; j++)
+				if (strcmp(locationName, locations[j]->getLocName()) == 0)
+					index = j;
+			//cout << "\nIndex " << i + 1<< ": " << index << endl;
+			int rowsNo = locations[index]->get_no_of_rows();
+			int* seatsPerRow = new int[rowsNo +1];
+			seatsPerRow = locations[index]->get_no_of_seats();
 
+			for (int k = 0; k < rowsNo; k++)
+			{
+				for (int j = 0; j < seatsPerRow[k]; j++)
+				{
+					bool value;
+					availableSeats >> value;
+					locations[index]->setSeatAvailability(k, j, value);
+					//cout << value << ' ';
+				}
+				//cout << endl;
+			}
+
+			delete[] seatsPerRow;
+			//seatsPerRow = NULL;
+		}
+	}
 	
+	//locations[0]->printSeatAvailabilityMatrix();
+	for (int i = 0; i < no_of_loc; i++)
+		locations[i]->printSeatAvailabilityMatrix();
+
+	availableSeats.close();
 
 	Ticket* tickets[100];
 	int cnt = 0;
@@ -248,6 +262,15 @@ int main()
 					cnt++;
 					cout << "\nTicket printed. Here's the info: " << endl;
 					//cout << *tickets[cnt - 1];
+					
+					locations[index]->setSeatAvailability(row - 1, column - 1, 0);
+					//locations[index]->printSeatAvailabilityMatrix();
+					fstream availSeats("Available Seats.txt", ios::in | ios::out | ios::trunc);
+
+					for (int i = 0; i < no_of_loc; i++)
+						locations[i]->writeAvailabilityMatrixToFile(availSeats);
+
+					availSeats.close();
 
 					tickets[cnt - 1]->serialize(outputBFile);
 

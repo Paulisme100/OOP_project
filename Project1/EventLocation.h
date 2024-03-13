@@ -183,13 +183,16 @@ public:
 
 	}
 
-	void setSeatAvailabilityMatrix(fstream input) {
-		char locName[50];
-		input >> locName;
-		char locName1[50];
-		strcpy(locName1, locName);
-
-		//strcmp()
+	void writeAvailabilityMatrixToFile(fstream& output) {
+		
+		output << this->locationName <<endl;
+		for (int i = 0; i < this->no_of_rows; i++)
+		{
+			for (int j = 0; j < this->no_of_seats[i]; j++)
+				output << seatMatrix[i][j].getAvailability() << ' ';
+			output << endl;
+		}
+	
 	}
 
 	void printSeatAvailabilityMatrix()
@@ -240,8 +243,8 @@ public:
 		return cat;
 	}
 
-	void setSeatAvailability(int row, int column) {
-		this->seatMatrix[row - 1][column - 1].setAvailability(0);
+	void setSeatAvailability(int indexi, int indexj, bool value) {
+		this->seatMatrix[indexi][indexj].setAvailability(value);
 	}
 
 	//copy construct
